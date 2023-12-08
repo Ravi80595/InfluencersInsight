@@ -12,23 +12,23 @@ const Reports = ({data}) => {
   const [reports, setReports] = useState([]);
   console.log('profile report',data[0].reports)
 
-  const fetchReports = async () => {
-    try {
-      const response = await fetch('https://unusual-puce-mite.cyclic.app/report/reports');
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      const reportsData = await response.json();
-      console.log(reportsData)
-      setReports(reportsData);
-    } catch (error) {
-      console.error('Error fetching reports:', error);
+const fetchReports = async () => {
+  try {
+    const response = await fetch('https://unusual-puce-mite.cyclic.app/report/reports');
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
-  };
+    const reportsData = await response.json();
+    console.log(reportsData)
+    setReports(reportsData);
+  } catch (error) {
+    console.error('Error fetching reports:', error);
+  }
+};
 
-  useEffect(() => {
-    fetchReports();
-  }, []);
+useEffect(() => {
+  fetchReports();
+}, []);
 
 
 

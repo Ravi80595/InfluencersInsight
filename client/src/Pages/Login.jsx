@@ -24,7 +24,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://localhost:2147/user/login', {
+      const response = await fetch('https://unusual-puce-mite.cyclic.app/user/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

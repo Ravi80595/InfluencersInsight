@@ -48,7 +48,7 @@ const handleFormSubmit = async (e) => {
       influencers: selectedInfluencers,
     };
     console.log(updatedFormData)
-    const response = await fetch(`http://localhost:2147/report/assignReport/${clientDetail._id}`, {
+    const response = await fetch(`https://unusual-puce-mite.cyclic.app/report/assignReport/${clientDetail._id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ useEffect(() => {
     // Fetch influencers from the backend when the component mounts
     const fetchInfluencers = async () => {
       try {
-        const response = await fetch('http://localhost:2147/influencer/influencers');
+        const response = await fetch('https://unusual-puce-mite.cyclic.app/influencer/influencers');
         const influencersData = await response.json();
         setInfluencers(influencersData);
       } catch (error) {

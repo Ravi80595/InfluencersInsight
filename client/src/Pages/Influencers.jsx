@@ -22,7 +22,7 @@ const Influencer = () => {
 const handleInfluencerFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:2147/influencer/create', {
+      const response = await fetch('https://unusual-puce-mite.cyclic.app/influencer/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ const handleInfluencerFormSubmit = async (e) => {
 
 const fetchInfluencers = async () => {
 try {
-    const response = await fetch('http://localhost:2147/influencer/influencers');
+    const response = await fetch('https://unusual-puce-mite.cyclic.app/influencer/influencers');
     if (!response.ok) {
     throw new Error(`HTTP error! Status: ${response.status}`);
     }

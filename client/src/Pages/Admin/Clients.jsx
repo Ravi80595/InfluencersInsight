@@ -18,10 +18,11 @@ const Clients = () => {
   const [showClientForm, setShowClientForm] = useState(false);
   // console.log(clientFormData)
 
+
 const handleClientFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:2147/user/signup', {
+      const response = await fetch('https://unusual-puce-mite.cyclic.app/user/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -47,7 +48,7 @@ const handleClientFormSubmit = async (e) => {
 
 const fetchClients = async () => {
 try {
-    const response = await fetch('http://localhost:2147/user/allUsers');
+    const response = await fetch('https://unusual-puce-mite.cyclic.app/user/allUsers');
     if (!response.ok) {
     throw new Error(`HTTP error! Status: ${response.status}`);
     }

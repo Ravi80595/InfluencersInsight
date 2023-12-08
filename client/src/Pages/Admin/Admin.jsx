@@ -20,7 +20,7 @@ useEffect(() => {
     // Fetch influencers from the backend when the component mounts
     const fetchInfluencers = async () => {
       try {
-        const response = await fetch('http://localhost:2147/influencer/influencers');
+        const response = await fetch('https://unusual-puce-mite.cyclic.app/influencer/influencers');
         const influencersData = await response.json();
         setInfluencers(influencersData);
       } catch (error) {
@@ -36,7 +36,7 @@ useEffect(() => {
 
   const fetchReports = async () => {
     try {
-      const response = await fetch('http://localhost:2147/report/reports');
+      const response = await fetch('https://unusual-puce-mite.cyclic.app/report/reports');
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }

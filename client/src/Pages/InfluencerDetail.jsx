@@ -9,7 +9,7 @@ const InfluencerDetail = ({detail}) => {
 const handleDeleteReport = async (reportId) => {
     console.log(reportId)
     try {
-        const response = await fetch(`http://localhost:2147/influencer/${reportId}`, {
+        const response = await fetch(`https://unusual-puce-mite.cyclic.app/influencer/${reportId}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',

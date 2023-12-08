@@ -18,7 +18,7 @@ const Dashboard = () => {
       const token = localStorage.getItem('token');
   
       if (token) {
-        fetch('http://localhost:2147/user/userProfile', {
+        fetch('https://unusual-puce-mite.cyclic.app/user/userProfile', {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,

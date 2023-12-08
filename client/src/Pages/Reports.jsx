@@ -14,7 +14,7 @@ const Reports = ({data}) => {
 
   const fetchReports = async () => {
     try {
-      const response = await fetch('http://localhost:2147/report/reports');
+      const response = await fetch('https://unusual-puce-mite.cyclic.app/report/reports');
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }

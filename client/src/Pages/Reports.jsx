@@ -6,10 +6,11 @@ import { useEffect } from 'react';
 
 
 
-const Reports = () => {
+const Reports = ({data}) => {
   const [selectedReport, setSelectedReport] = useState(null);
   const [displayMode, setDisplayMode] = useState('list');
   const [reports, setReports] = useState([]);
+  console.log('profile report',data[0].reports)
 
   const fetchReports = async () => {
     try {
@@ -35,7 +36,7 @@ return (
     <div style={{ marginTop: '40px' }}>
     {displayMode === 'list' && (
             <div style={{ marginTop: '40px' }}>
-              {/* <h2 style={{ fontSize: '20px', marginBottom: '10px', textAlign: 'center', marginBottom: '30px' }}>All Reports</h2> */}
+              <h2 style={{ fontSize: '20px', marginBottom: '10px', textAlign: 'center', marginBottom: '30px' }}>All Campaigns</h2>
     
               <TableContainer>
                 <Table size='sm'>
@@ -48,7 +49,7 @@ return (
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {reports && reports.map(ele => (
+                    {data[0].reports.length>0 && data[0].reports.map(ele => (
                       <Tr key={ele.reportName} cursor="pointer" _hover={{ backgroundColor: "#f3f4f6" }}>
                         <Td>{ele.reportName}</Td>
                         <Td>{ele.reportName}</Td>

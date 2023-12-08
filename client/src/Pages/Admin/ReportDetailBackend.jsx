@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Tabs, TabList, TabPanels, Tab, TabPanel,Flex,Box,Text,TableContainer, Table, Thead, Tr, Th, Tbody, Td, Button,} from '@chakra-ui/react'
+import { Tabs, TabList, TabPanels, Tab, TabPanel,Flex,Box,Text,TableContainer, Table, Thead, Tr, Th, Tbody, Td, Button,useToast} from '@chakra-ui/react'
 import { FaRegHeart } from "react-icons/fa";
 import { FaCertificate } from "react-icons/fa";
 import { FaRegComment } from "react-icons/fa";
@@ -9,11 +9,15 @@ import { useNavigate } from 'react-router-dom';
 
 
 
-const ReportDetails = ({ report }) => {
+const ReportDetailBackend = ({ report }) => {
   const navigate=useNavigate()
   const [reportData,setReportData]=useState([])
-  
-  console.log(reportData,'selected report')
+  const toast = useToast()
+  const [editMode, setEditMode] = useState(false);
+  const [influencers, setInfluencers] = useState(report.influencersLive);
+  const [postsLive, setPostsLive] = useState(report.postsLive);
+  const [reach, setReach] = useState(report.reach);
+  const [budget, setBudget] = useState(report.budget);
 
 
 const handleDeleteReport = async (reportId) => {
@@ -25,7 +29,13 @@ const handleDeleteReport = async (reportId) => {
       },
     });
     if (response.ok) {
-      // Remove the deleted report from the local state
+      toast({
+        title: 'Campaign Deleted.',
+        description: "Campaign deleted please go back.",
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      })
       navigate('/admin')
       } else {
       console.error('Error deleting report:', response.status);
@@ -33,6 +43,13 @@ const handleDeleteReport = async (reportId) => {
   } catch (error) {
     console.error('Error deleting report:', error);
   }
+};
+
+
+const handleSaveChanges = async () => {
+  // Implement logic to send a PUT request and save changes to the server
+  // Update the state and exit edit mode
+  setEditMode(false);
 };
 
 
@@ -66,7 +83,93 @@ return (
       </TabList>
       <TabPanels>
         <TabPanel>
+        {editMode ? (
+              // <form>
+              //   <label>
+              //     Influencers Live:
+              //     <input type="text" value={influencers} onChange={(e) => setInfluencers(e.target.value)} />
+              //   </label>
+              //   <Button onClick={handleSaveChanges}>Save</Button>
+              //   <Button onClick={() => setEditMode(false)}>Cancel</Button>
+              // </form>
+
+
+
+<form onSubmit={handleSaveChanges} style={{width:'50%',margin:'auto',border:'2px solid grey',padding:'20px',borderRadius:'20px'}}>
+          
+            <label style={{ display: 'block', margin: '10px 0', fontSize: '14px', fontWeight: 'bold' }}>
+              Client Name:
+              <input
+                type="text"
+                value={influencers}
+                onChange={(e) => setInfluencers( e.target.value)}
+                style={{ padding: '8px', fontSize: '14px', width: '100%', boxSizing: 'border-box', marginTop: '5px' }}
+              />
+            </label>
+            <label style={{ display: 'block', margin: '10px 0', fontSize: '14px', fontWeight: 'bold' }}>
+              Posts Live
+              <input
+                type="text"
+                value={postsLive}
+                onChange={(e) => setPostsLive(e.target.value)}
+                style={{ padding: '8px', fontSize: '14px', width: '100%', boxSizing: 'border-box', marginTop: '5px' }}
+              />
+            </label>
+            <label style={{ display: 'block', margin: '10px 0', fontSize: '14px', fontWeight: 'bold' }}>
+              Reach
+              <input
+                type="text"
+                value={reach}
+                onChange={(e) => setReach( e.target.value)}
+                style={{ padding: '8px', fontSize: '14px', width: '100%', boxSizing: 'border-box', marginTop: '5px' }}
+              />
+            </label>
+            <label style={{ display: 'block', margin: '10px 0', fontSize: '14px', fontWeight: 'bold' }}>
+              Budget
+              <input
+                type="text"
+                value={budget}
+                onChange={(e) => setBudget( e.target.value)}
+                style={{ padding: '8px', fontSize: '14px', width: '100%', boxSizing: 'border-box', marginTop: '5px' }}
+              />
+            </label>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
+              <button
+                type="submit"
+                style={{
+                  padding: '10px',
+                  backgroundColor: '#4CAF50',
+                  color: '#fff',
+                  borderRadius: '5px',
+                  cursor: 'pointer',
+                  border: 'none',
+                  fontSize: '14px',
+                }}
+              >
+                Submit
+              </button>
+              <button
+                type="button"
+                onClick={() => setEditMode(false)}
+                style={{
+                  padding: '10px',
+                  backgroundColor: '#ccc',
+                  color: '#fff',
+                  borderRadius: '5px',
+                  cursor: 'pointer',
+                  border: 'none',
+                  fontSize: '14px',
+                }}
+              >
+                Close
+              </button>
+            </div>
+            </form>
+            
+
+            ) : (
           <Box>
+            <Box>
             <Flex justifyContent={'space-around'}>
               <Box border={'2px solid grey'} p={'17px'} borderRadius={'10px'} w={'22%'}>
                 <Flex justifyContent={'space-between'}>
@@ -158,6 +261,14 @@ return (
             <Button>Edit</Button>
             <Button onClick={() => handleDeleteReport(report._id)}>Delete</Button>
           </Flex> */}
+           {/* ... Existing code ... */}
+           <Flex justifyContent={'space-around'} w={'50%'} m={'auto'} mt={'30px'}>
+           <Button onClick={() => setEditMode(true)}>Edit</Button>
+           <Button onClick={() => handleDeleteReport(report._id)}>Delete</Button>
+         </Flex>
+       </Box>
+     )}
+          
         </TabPanel>
 
 
@@ -200,4 +311,4 @@ return (
   );
 };
 
-export default ReportDetails;
+export default ReportDetailBackend;

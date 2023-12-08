@@ -21,23 +21,23 @@ body{
     cursor: pointer;
 }
 
-
 /* Custom Styles */
 
 #lhsBox{
     border-right: 1px solid #e5e7eb;
-    background-color: white;
+    /* background-color: white; */
     position: fixed;
 }
 #navbarBox{
     width: 100%;
     align-items: center;
-    background-color: white;
+    /* background-color: white; */
     border-bottom: 1px solid #e5e7eb;
     position: sticky;
     top: 0;
     left: 0;
     z-index: 1;
+    color: white;
     height: 60px;
 }
 #rhsBody{

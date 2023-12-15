@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box,TableContainer,Table,Thead,Tr,Th,Tbody,Td,Spinner,Image,Flex,Text,Input,Select, Button } from '@chakra-ui/react'
 // import ReportDetails from '../ReportDetails';
 import ReportDetailBackend from './ReportDetailBackend';
+import { baseUrl } from '../../Components/BaseUrl';
 
 
 const Admin = () => {
@@ -20,7 +21,7 @@ useEffect(() => {
     // Fetch influencers from the backend when the component mounts
     const fetchInfluencers = async () => {
       try {
-        const response = await fetch('https://unusual-puce-mite.cyclic.app/influencer/influencers');
+        const response = await fetch(`${baseUrl}/influencer/influencers`);
         const influencersData = await response.json();
         setInfluencers(influencersData);
       } catch (error) {
@@ -36,7 +37,7 @@ useEffect(() => {
 
   const fetchReports = async () => {
     try {
-      const response = await fetch('https://unusual-puce-mite.cyclic.app/report/reports');
+      const response = await fetch(`${baseUrl}/report/reports`);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }

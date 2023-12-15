@@ -2,6 +2,8 @@ import React from 'react'
 import { Tabs, TabList, TabPanels, Tab, TabPanel,Flex,Box,Text,TableContainer, Table, Thead, Tr, Th, Tbody, Td, Button,} from '@chakra-ui/react'
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { baseUrl } from '../../Components/BaseUrl';
+import axios from 'axios';
 
 
 
@@ -25,7 +27,6 @@ const ClientDetails = ({clientDetail}) => {
         influencers: selectedInfluencers || [],
       });
 
-console.log('client details',clientDetail)
 
 
 const handleCheckboxChange = (influencerId) => {
@@ -48,7 +49,7 @@ const handleFormSubmit = async (e) => {
       influencers: selectedInfluencers,
     };
     console.log(updatedFormData)
-    const response = await fetch(`https://unusual-puce-mite.cyclic.app/report/assignReport/${clientDetail._id}`, {
+    const response = await fetch(`${baseUrl}/report/assignReport/${clientDetail._id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -80,78 +81,117 @@ const handleFormSubmit = async (e) => {
 };
 
 useEffect(() => {
-    // Fetch influencers from the backend when the component mounts
     const fetchInfluencers = async () => {
       try {
-        const response = await fetch('https://unusual-puce-mite.cyclic.app/influencer/influencers');
+        const response = await fetch(`${baseUrl}/influencer/influencers`);
         const influencersData = await response.json();
         setInfluencers(influencersData);
       } catch (error) {
         console.error('Error fetching influencers:', error);
       }
     };
-
     fetchInfluencers();
   }, []);
+
+// console.log(clientDetail,'dets')
+
+
+const handleUpdateSuggestion = async (influencerID) => {
+  try {
+
+    const response = await axios.patch(`${baseUrl}/user/suggested`, {
+      userID: clientDetail._id,
+      influencerID
+    });
+    console.log(response.data.msg); // Log success message
+  } catch (error) {
+    console.error('Error updating profile:', error);
+  }
+};
+
+// console.log(influencers)
 
 
 return (
     <>
       <Tabs paddingTop={'20px'}>
       <TabList pb={'20px'}>
-        <Tab>Client Details</Tab>
+        <Tab>Client Brief</Tab>
+        <Tab>Campaigns</Tab>
         <Tab>Influencers</Tab>
-        {/* <Tab>Contents</Tab> */}
       </TabList>
       <TabPanels>
+        <TabPanel>
+          <Text textAlign={'center'} fontWeight={'600'} mt={'10px'} mb={'10px'}>{clientDetail.name}</Text>
+
+          <Box>
+            <Flex justifyContent={'space-around'} mt={'15px'}> 
+              <Box>
+                <Text mt={'10px'}>Brand Details : {clientDetail.brandName}</Text>
+                <Text mt={'10px'}>Brand Objective : {clientDetail.brandObjective}</Text>
+                <Text mt={'10px'}>Landing Cost : {clientDetail.landingCost}</Text>
+                <Text mt={'10px'}> </Text>
+              </Box>
+              <Box>
+                <Text mt={'10px'}>Email : {clientDetail.email}</Text>
+                <Text mt={'10px'}>Genere : {clientDetail.genere}</Text>
+                <Text mt={'10px'}> Remarks : {clientDetail.remarks}</Text>
+                <Text mt={'10px'}> </Text>
+              </Box>
+            </Flex>
+          </Box>
+        </TabPanel>
         <TabPanel>
             <Flex justifyContent={'space-between'}>
             <Box>
             <Text fontSize={'18px'}>{clientDetail.name}</Text>
-            <Text paddingTop={'10px'}>Email : {clientDetail.email}</Text>
+            {/* <Text paddingTop={'10px'}>Email : {clientDetail.email}</Text> */}
             <Text pt={'20px'} pb={'10x'} fontWeight={'bold'} fontSize={'20px'}>Campaigns</Text>
             </Box>
             <Button onClick={() => setShowForm(true)}>New Campaign</Button>
-            {/* <button
-            
-            style={{
-              padding: '10px',
-              backgroundColor: '#4CAF50',
-              color: '#fff',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              border: 'none',
-              fontSize: '14px',
-            }}
-          >
-            Add New Report
-          </button> */}
             </Flex>
             <hr />
-            <TableContainer>
+            {/* <TableContainer>
               <Table size='sm'>
                 <Thead>
                   <Tr textAlign='center'>
                     <Th>Name</Th>
                     <Th>Starting Date</Th>
-                    <Th>Brand Name</Th>
-                    <Th>Details</Th>
+                    <Th>Posts Live</Th>
+                    <Th>Influencers Live</Th>
                   </Tr>
                 </Thead>
-                <Tbody>
+                <Tbody> */}
+                <Box mt={'25px'} border={'2px solid grey'} p={'15px'} borderRadius={'5px'}>
                   {clientDetail.reports && clientDetail.reports.map(ele => (
-                    <Tr key={ele.name} cursor="pointer" _hover={{ backgroundColor: "#f3f4f6" }}>
-                      <Td>{ele.name}</Td>
-                      <Td>{ele.email}</Td>
-                      <Td>{ele.phone}</Td>
-                      <Td>
+                    <Box key={ele.brandName} mt={'25px'} border={'2px solid grey'} p={'15px'} borderRadius={'5px'}>
+                        <Flex justifyContent={'space-around'}>
+                          <Box>
+                            <Text> Campaign Name : {ele.reportName}</Text>
+                           <Text mt={'10px'}> Campaign Date : {ele.NoteDate} {ele.NoteTime}</Text>
+                           <Text mt={'10px'}>Campaign Budget : {ele.budget}</Text>
+                          </Box>
+                          <Box>
+                          <Text> Influencers Live : {ele.influencersLive}</Text>
+                           <Text mt={'10px'}> Posts Live : {ele.postsLive}</Text>
+                           <Text mt={'10px'}> Comments : {ele.comments}</Text>
+                          </Box>
+                          <Box>
+                          <Text> Engagement : {ele.engagements}</Text>
+                           <Text mt={'10px'}> Likes : {ele.likes}</Text>
+                           <Text mt={'10px'}>Reach : {ele.reach}</Text>
+                          </Box>
+                        </Flex>
+                      <Text>
                         {/* <Button onClick={() => { setSelectedReport(ele); setDisplayMode('details'); }}>More</Button> */}
-                      </Td>
-                    </Tr>
+                      </Text>
+                    {/* </Text> */}
+                    </Box>
                   ))}
-                </Tbody>
+              </Box>
+                {/* </Tbody>
               </Table>
-            </TableContainer>
+            </TableContainer> */}
         </TabPanel>
 
 
@@ -162,20 +202,18 @@ return (
                 <Thead>
                   <Tr textAlign='center'>
                     <Th>Influencer Name</Th>
-                    <Th>Email</Th>
+                    <Th>Instagram</Th>
                     <Th>Phone No.</Th>
-                    <Th>Details</Th>
+                    <Th>Send</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {clientDetail.influencers && clientDetail.influencers.map(ele => (
+                  {influencers && influencers.map(ele => (
                     <Tr key={ele.name} cursor="pointer" _hover={{ backgroundColor: "#f3f4f6" }}>
                       <Td>{ele.name}</Td>
-                      <Td>{ele.email}</Td>
+                      <Td>{ele.instagram}</Td>
                       <Td>{ele.phone}</Td>
-                      <Td>
-                        {/* <Button onClick={() => { setSelectedReport(ele); setDisplayMode('details'); }}>More</Button> */}
-                      </Td>
+                      <Td><Button onClick={(ele)=>handleUpdateSuggestion(ele._id)}>Suggest</Button></Td>
                     </Tr>
                   ))}
                 </Tbody>

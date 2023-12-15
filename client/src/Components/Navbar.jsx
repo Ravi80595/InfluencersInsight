@@ -17,7 +17,9 @@ return (
       <Flex w={["70%","40%",'30%']} p={5} justifyContent="space-evenly" fontSize='10px'>
         {/* <Button display={["none","none","block"]} onClick={()=>alert("Please Signup to create Account")}>Create Account</Button> */}
         <Link to='/login'>
-        <Button>Login</Button>
+        <Text>Home</Text>
+        <Text>About</Text>
+        <Text>Login</Text>
         </Link>
       </Flex>
     </Flex>

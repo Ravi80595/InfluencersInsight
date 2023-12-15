@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Tabs, TabList, TabPanels, Tab, TabPanel,Flex,Box,Text,TableContainer, Table, Thead, Tr, Th, Tbody, Td, Button,} from '@chakra-ui/react'
+import { Tabs, TabList, TabPanels, Tab, TabPanel,Flex,Box,Text,TableContainer, Table, Thead, Tr, Th, Tbody, Td, Button, Image,} from '@chakra-ui/react'
 import { FaRegHeart } from "react-icons/fa";
 import { FaCertificate } from "react-icons/fa";
 import { FaRegComment } from "react-icons/fa";
 import { AiOutlinePercentage } from "react-icons/ai";
 import { MdCurrencyRupee } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
+import { FaPeopleGroup } from "react-icons/fa6";
+import { VscGitPullRequestCreate } from "react-icons/vsc";
+import { FaTelegramPlane } from "react-icons/fa";
+import { RiMoneyDollarCircleFill } from "react-icons/ri";
+import { baseUrl } from '../Components/BaseUrl';
 
 
 
@@ -18,7 +23,7 @@ const ReportDetails = ({ report }) => {
 
 const handleDeleteReport = async (reportId) => {
   try {
-    const response = await fetch(`https://unusual-puce-mite.cyclic.app/report/${reportId}`, {
+    const response = await fetch(`${baseUrl}/report/${reportId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -40,7 +45,7 @@ useEffect(() => {
   // Fetch the report details by its ID
   const fetchReportDetails = async () => {
     try {
-      const response = await fetch(`https://unusual-puce-mite.cyclic.app/report/${report._id}`);
+      const response = await fetch(`${baseUrl}/report/${report._id}`);
       if (response.ok) {
         const data = await response.json();
         setReportData(data);
@@ -74,7 +79,7 @@ return (
                 <Text fontSize={'16px'} fontWeight={'400'} pb={'10px'}>INFLUENCERS LIVE</Text>
                 <Text fontSize={'18px'} fontWeight={'500'}>{report.influencersLive}</Text>
                   </Box>
-                  <FaCertificate />
+                  <FaPeopleGroup fontSize={'25px'} />
                 </Flex>
               </Box>
               <Box border={'2px solid grey'} p={'17px'} borderRadius={'10px'} w={'22%'}>
@@ -83,7 +88,7 @@ return (
                 <Text fontSize={'16px'} fontWeight={'400'} pb={'10px'}>POSTS LIVE</Text>
                 <Text fontSize={'18px'} fontWeight={'500'}>{report.postsLive}</Text>
                   </Box>
-                  <FaCertificate />
+                  <VscGitPullRequestCreate fontSize={'25px'} />
                 </Flex>
               </Box>
               <Box border={'2px solid grey'} p={'17px'} borderRadius={'10px'} w={'22%'}>
@@ -92,16 +97,16 @@ return (
                 <Text fontSize={'16px'} fontWeight={'400'} pb={'10px'}>TOTAL REACH</Text>
                 <Text fontSize={'18px'} fontWeight={'500'}>{report.reach}</Text>
                   </Box>
-                  <FaCertificate />
+                  <FaTelegramPlane fontSize={'25px'} />
                 </Flex>
               </Box>
               <Box border={'2px solid grey'} p={'17px'} borderRadius={'10px'} w={'22%'}>
                 <Flex justifyContent={'space-between'}>
                   <Box>
                 <Text fontSize={'16px'} fontWeight={'400'} pb={'10px'}>BUDGET SPENT</Text>
-                <Text fontSize={'18px'} fontWeight={'500'}>{report.budget} RUPIYA</Text>
+                <Text fontSize={'18px'} fontWeight={'500'}>{report.budget}</Text>
                   </Box>
-                  <FaCertificate/>
+                  <RiMoneyDollarCircleFill fontSize={'25px'} />
                 </Flex>
               </Box>
             </Flex>
@@ -168,17 +173,17 @@ return (
                 <Thead>
                   <Tr textAlign='center'>
                     <Th>Influencer Name</Th>
-                    <Th>Email</Th>
-                    <Th>Phone No.</Th>
-                    <Th>Details</Th>
+                    <Th>Instagram</Th>
+                    <Th>Followers</Th>
+                    <Th>Average views</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
                   {reportData.influencers && reportData.influencers.map(ele => (
                     <Tr key={ele.name} cursor="pointer" _hover={{ backgroundColor: "#f3f4f6" }}>
                       <Td>{ele.name}</Td>
-                      <Td>{ele.email}</Td>
-                      <Td>{ele.phone}</Td>
+                      <Td>{ele.instagram}</Td>
+                      <Td>{ele.views}</Td>
                       <Td>
                         {/* <Button onClick={() => { setSelectedReport(ele); setDisplayMode('details'); }}>More</Button> */}
                       </Td>

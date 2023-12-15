@@ -2,7 +2,8 @@ import { Box,Flex,FormControl,Input,Button,FormLabel,Image,Text, Heading, color,
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Navbar from '../Components/Navbar'
-
+import Logins from '../Images/Logins.png'
+import { baseUrl } from '../Components/BaseUrl'
 
 const Login = () => {
   const navigate=useNavigate()
@@ -24,7 +25,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('https://unusual-puce-mite.cyclic.app/user/login', {
+      const response = await fetch(`${baseUrl}/user/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -53,14 +54,14 @@ return (
   <>
     <Box m="auto">
         <Flex>
-            <Box w={'50%'} p={'70px'} h={'100vh'} display={["none","none","block"]} color={'white'} background={'#242843'}>
+            <Box w={'50%'} p={'70px'} h={'100vh'} display={["none","none","block"]} color={'white'} background={'#272939'}>
               <Heading mb={'20px'}>Ravi Sharma</Heading>
               <Text fontSize={'20px'}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo deleniti quos, similique veniam itaque porro laboriosam, laudantium cum explicabo possimus et tempore excepturi aspernatur maxime, in aliquam provident rem temporibus iste tenetur.</Text>
-                <Image mt={'40px'} h="300px" src="https://app.qoruz.com/2db5bebf9585b8cd31c99f42edbb8b29.svg"/>
+                <Image mt={'40px'} h="400px" src={Logins}/>
             </Box>
             <Box p={5} w={'50%'} pt={'70px'} textAlign={'center'}>
               <Flex justifyContent={'center'}>
-              <Image w={'30%'} src='https://terareach.s3.ap-southeast-1.amazonaws.com/white-labeled-brands/qoruz_v2.png'/>
+              <Image w={'30%'} src='https://www.laudco.com/wp-content/uploads/2021/10/cropped-NkqJmjVfVYE9cegFgw0V-2.png'/>
               </Flex>
               <Text pt={'10px'} pb={'80px'}>Sign in to your account</Text>
             <FormControl isRequired w={'50%'} m={'auto'}>

@@ -7,18 +7,21 @@ import axios from 'axios'
 import Reports from './Reports'
 import { IoAnalyticsSharp } from "react-icons/io5";
 import { MdOutlineAccessTime } from "react-icons/md";
-
-
+import laudcoWhite from '../Images/laudcoWhite.png'
+import {baseUrl} from '../Components/BaseUrl'
+import ClientInfluencers from './ClientInfluencers'
 
 const Dashboard = () => {
     const [show,setShow]=useState("Users")
     const [profileData,setProfileData]=useState([])
+// console.log(baseUrl,'url')
+
 
     useEffect(() => {
       const token = localStorage.getItem('token');
   
       if (token) {
-        fetch('https://unusual-puce-mite.cyclic.app/user/userProfile', {
+        fetch(`${baseUrl}/user/userProfile`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -59,22 +62,22 @@ return (
 <Flex w='100%'>
     <Box backgroundImage={'https://themewagon.github.io/pluto/images/layout_img/pattern_h.png'} backgroundColor="#15283c" id='lhsBox'  fontSize={[12,15,20]} w={["5%","5%","10%","16%"]} h='100vh' p={["0px","0px",'0px']}>
       <Flex justifyContent={'center'} p={'10px'} pt={'20px'}>
-      <Image w={'150px'} src='https://www.laudco.com/wp-content/uploads/2021/10/cropped-NkqJmjVfVYE9cegFgw0V-2.png'/>
+      <Image w={'150px'} src={laudcoWhite}/>
       </Flex>
       <Box id='linkBox' marginTop={'20px'} color={'white'}>
       <Text display={["none","none","none","block"]} pb={'5px'} color={'white'} pl={'10px'}>General</Text>
       <hr />
-      <Flex id='usersBox' _hover={{color:'black'}} p='10px 17px' className='linkItem' onClick={()=>setShow("Admins")}>
-      <MdOutlineAccessTime />
-      <Text pl={["0px","5px",'15px']} className="lhsName">Publish Time</Text>
-      </Flex>
       <Flex id='usersBox' _hover={{color:'black'}} p='10px 17px' className='linkItem' onClick={()=>setShow("Users")}>
       <IoAnalyticsSharp />      
-      <Text pl={["0px","5px",'15px']} className="lhsName">Reports</Text>
+      <Text pl={["0px","5px",'15px']} className="lhsName">On going campaign overview</Text>
       </Flex>
       <Flex id='usersBox' _hover={{color:'black'}} p='10px 17px' className='linkItem' onClick={()=>setShow("Posts")}>
       <GiPostStamp/>
-      <Text pl={["0px","5px",'15px']} className="lhsName">Influencers</Text>
+      <Text pl={["0px","5px",'15px']} className="lhsName">Influencers to select</Text>
+      </Flex>
+      <Flex id='usersBox' _hover={{color:'black'}} p='10px 17px' className='linkItem' onClick={()=>setShow("Admins")}>
+      <MdOutlineAccessTime />
+      <Text pl={["0px","5px",'15px']} className="lhsName">Create campaign</Text>
       </Flex>
       </Box>
 </Box>
@@ -93,7 +96,7 @@ return (
 <Box id='rhsBody' m='30px' p='30px'>
 
 {
-show==="Users"?<Reports data={profileData}/>:<h1>Fearture Available Soon</h1>
+show==="Users"?<Reports data={profileData}/>:show==="Posts"?<ClientInfluencers/>:<h1>Fearture Available Soon</h1>
 }
 </Box>
 </Box>

@@ -6,6 +6,7 @@ import { FaRegComment } from "react-icons/fa";
 import { AiOutlinePercentage } from "react-icons/ai";
 import { MdCurrencyRupee } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
+import { baseUrl } from '../../Components/BaseUrl';
 
 
 
@@ -22,7 +23,7 @@ const ReportDetailBackend = ({ report }) => {
 
 const handleDeleteReport = async (reportId) => {
   try {
-    const response = await fetch(`https://unusual-puce-mite.cyclic.app/report/${reportId}`, {
+    const response = await fetch(`${baseUrl}/report/${reportId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -57,7 +58,7 @@ useEffect(() => {
   // Fetch the report details by its ID
   const fetchReportDetails = async () => {
     try {
-      const response = await fetch(`https://unusual-puce-mite.cyclic.app/report/${report._id}`);
+      const response = await fetch(`${baseUrl}/report/${report._id}`);
       if (response.ok) {
         const data = await response.json();
         setReportData(data);

@@ -10,6 +10,7 @@ import Admin from './Admin'
 import Influencers from '../Influencers'
 import Clients from './Clients'
 import '../../CSS/Dashboard.css'
+import { baseUrl } from '../../Components/BaseUrl'
 
 
 const AdminPanel = () => {
@@ -22,7 +23,7 @@ useEffect(()=>{
 },[])
 
 const getadminProfile=()=>{
-axios.get(`https://unusual-puce-mite.cyclic.app/admin/profile/${'admin._id'}`)
+axios.get(`${baseUrl}/admin/profile/${'admin._id'}`)
 .then((res)=>{
   console.log(res.data)
   setProfileData([res.data])
@@ -38,20 +39,20 @@ localStorage.setItem("adminToken",JSON.stringify(r))
 
 return (
 <Flex w='100%' backgroundColor={'#f9f9f9'}>
-    <Box id='lhsBox' backgroundColor={'white'} fontSize={[12,15,20]} w={["5%","5%","10%","16%"]} h='100vh' p={["0px","0px",'20px']}>
-    <Text textAlign={"center"} mb={5} >Laudco Media</Text>
+    <Box backgroundImage={'https://themewagon.github.io/pluto/images/layout_img/pattern_h.png'} backgroundColor="#15283c" id='lhsBox' fontSize={[12,15,20]} w={["5%","5%","10%","16%"]} h='100vh' p={["0px","0px",'20px']}>
+    <Text textAlign={"center"} mb={5} color={'white'}>Laudco Backend</Text>
       <Box id='linkBox' marginTop={'40px'}>
-      <Text display={["none","none","none","block"]}>Client Facing</Text>
+      <Text display={["none","none","none","block"]} color={'white'}>Client Facing</Text>
       <hr />
-      <Flex id='usersBox' p='10px 17px' className='linkItem' onClick={()=>setShow("client")}>
+      <Flex _hover={{color:'black'}} color={'white'} id='usersBox' p='10px 17px' className='linkItem' onClick={()=>setShow("client")}>
       <MdOutlineAccessTime />
       <Text pl={["0px","5px",'15px']} className="lhsName">Clients</Text>
       </Flex>
-      <Flex id='usersBox' p='10px 17px' className='linkItem' onClick={()=>setShow("Users")}>
+      <Flex _hover={{color:'black'}} id='usersBox' p='10px 17px' color={'white'} className='linkItem' onClick={()=>setShow("Users")}>
       <IoAnalyticsSharp />      
       <Text pl={["0px","5px",'15px']} className="lhsName">Campaigns</Text>
       </Flex>
-      <Flex id='usersBox' p='10px 17px' className='linkItem' onClick={()=>setShow("influencer")}>
+      <Flex _hover={{color:'black'}} id='usersBox' p='10px 17px' color={'white'} className='linkItem' onClick={()=>setShow("influencer")}>
       <GiPostStamp/>
       <Text pl={["0px","5px",'15px']} className="lhsName">Influencers</Text>
       </Flex>
@@ -61,8 +62,8 @@ return (
 
 {/*     Right hand Side From Here    */}
 
-<Box id='rhsBox' w='84%' ml='16%' h='auto'> 
-<Box id='navbarBox'  p='0px 40px'>
+<Box id='rhsBox' w='84%' ml='16%' h='auto' backgroundColor={'#f9f9f9'}> 
+<Box id='navbarBox' backgroundColor={'#15283c'} p='0px 40px'>
 <Flex justifyContent='space-between' pt={3} mb={3}>
 <Text fontWeight='bold'>Welcome To Dashboard</Text>
 </Flex>

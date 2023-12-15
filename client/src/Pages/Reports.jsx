@@ -3,7 +3,8 @@ import { Box,TableContainer,Table,Thead,Tr,Th,Tbody,Td,Spinner,Image,Flex,Text,I
 import { useState } from 'react';
 import ReportDetails from './ReportDetails';
 import { useEffect } from 'react';
-
+import { IoMdArrowBack } from "react-icons/io";
+import {baseUrl} from '../Components/BaseUrl'
 
 
 const Reports = ({data}) => {
@@ -12,9 +13,11 @@ const Reports = ({data}) => {
   const [reports, setReports] = useState([]);
   console.log('profile report',data[0].reports)
 
+
+  
 const fetchReports = async () => {
   try {
-    const response = await fetch('https://unusual-puce-mite.cyclic.app/report/reports');
+    const response = await fetch(`${baseUrl}/report/reports`);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -42,7 +45,7 @@ return (
                 <Table size='sm'>
                   <Thead>
                     <Tr textAlign='center'>
-                      <Th>Brand Name</Th>
+                      <Th>Campaign Name</Th>
                       <Th>Report Name</Th>
                       <Th>Created On</Th>
                       <Th>Details</Th>
@@ -68,7 +71,7 @@ return (
           {/* Conditionally render the details component */}
           {displayMode === 'details' && (
             <div>
-              <Button onClick={() => setDisplayMode('list')}>Back</Button>
+              <Button onClick={() => setDisplayMode('list')}><IoMdArrowBack /></Button>
               {selectedReport && <ReportDetails report={selectedReport} />}
             </div>
           )}

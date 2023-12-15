@@ -3,6 +3,7 @@ import { Box, TableContainer, Table, Thead, Tr, Th, Tbody, Td, Spinner, Image, F
 import ReportDetails from '../ReportDetails';
 import InfluencerDetail from '../InfluencerDetail';
 import ClientDetails from './ClientDetails';
+import { baseUrl } from '../../Components/BaseUrl';
 
 const Clients = () => {
   const [selectedReport, setSelectedReport] = useState(null);
@@ -11,7 +12,13 @@ const Clients = () => {
     name: '',
     brandName:'',
     email:'',
-    password:''
+    password:'',
+    noOfInfluencers:'',
+    brandObjective:'',
+    dileverable:'',
+    genere:'',
+    landingCost:'',
+    remarks:''
   });
   const [users, setUsers] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -22,7 +29,7 @@ const Clients = () => {
 const handleClientFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('https://unusual-puce-mite.cyclic.app/user/signup', {
+      const response = await fetch(`${baseUrl}/user/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -48,7 +55,7 @@ const handleClientFormSubmit = async (e) => {
 
 const fetchClients = async () => {
 try {
-    const response = await fetch('https://unusual-puce-mite.cyclic.app/user/allUsers');
+    const response = await fetch(`${baseUrl}/user/allUsers`);
     if (!response.ok) {
     throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -70,7 +77,7 @@ fetchClients();
       <nav style={{ display: 'flex', justifyContent: 'space-between', padding: '10px'}}>
         <div>
           {/* Logo */}
-          <span style={{ fontWeight: 'bold' }}>Clients</span>
+          <span style={{ fontWeight: 'bold' }}>Clients (BD TEAM)</span>
         </div>
         <div>
           <button
@@ -94,58 +101,103 @@ fetchClients();
       {/* Influencer Form */}
       {showClientForm && (
         <div
-          style={{
-            position: 'fixed',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '40%',
-            backgroundColor: '#fff',
-            padding: '20px',
-            border: '1px solid #ccc',
-            borderRadius: '8px',
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-            zIndex: '1000',
-          }}
+        style={{
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '40%',
+          backgroundColor: '#fff',
+          padding: '20px',
+          border: '1px solid #ccc',
+          borderRadius: '8px',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+          zIndex: '1000',
+        }}
         >
           <form onSubmit={handleClientFormSubmit}>
             {/* Influencer Name Input */}
-            <label style={{ display: 'block', margin: '10px 0', fontSize: '14px', fontWeight: 'bold' }}>
-              Client Name:
+            
               <input
                 type="text"
                 value={clientFormData.name}
+                placeholder='Client Name'
                 onChange={(e) => setClientFormData({ ...clientFormData, name: e.target.value })}
-                style={{ padding: '8px', fontSize: '14px', width: '100%', boxSizing: 'border-box', marginTop: '5px' }}
+                style={{ padding: '8px', fontSize: '14px', width: '47%', boxSizing: 'border-box', margin: '5px',border:'1px solid grey',borderRadius:'5px' }}
               />
-            </label>
-            <label style={{ display: 'block', margin: '10px 0', fontSize: '14px', fontWeight: 'bold' }}>
-              Brand Name
+          
               <input
                 type="text"
+                placeholder='Brand Name'
                 value={clientFormData.brandName}
                 onChange={(e) => setClientFormData({ ...clientFormData, brandName: e.target.value })}
-                style={{ padding: '8px', fontSize: '14px', width: '100%', boxSizing: 'border-box', marginTop: '5px' }}
-              />
-            </label>
-            <label style={{ display: 'block', margin: '10px 0', fontSize: '14px', fontWeight: 'bold' }}>
-              Email
+                style={{ padding: '8px', fontSize: '14px', width: '47%', boxSizing: 'border-box', margin: '5px',border:'1px solid grey',borderRadius:'5px' }}              
+                />
+       
               <input
                 type="text"
+                placeholder='Email'
                 value={clientFormData.email}
                 onChange={(e) => setClientFormData({ ...clientFormData, email: e.target.value })}
-                style={{ padding: '8px', fontSize: '14px', width: '100%', boxSizing: 'border-box', marginTop: '5px' }}
-              />
-            </label>
-            <label style={{ display: 'block', margin: '10px 0', fontSize: '14px', fontWeight: 'bold' }}>
-              Password
+                style={{ padding: '8px', fontSize: '14px', width: '47%', boxSizing: 'border-box', margin: '5px',border:'1px solid grey',borderRadius:'5px' }}              />
+
               <input
                 type="text"
+                placeholder='Password'
                 value={clientFormData.password}
                 onChange={(e) => setClientFormData({ ...clientFormData, password: e.target.value })}
-                style={{ padding: '8px', fontSize: '14px', width: '100%', boxSizing: 'border-box', marginTop: '5px' }}
-              />
-            </label>
+                style={{ padding: '8px', fontSize: '14px', width: '47%', boxSizing: 'border-box', margin: '5px',border:'1px solid grey',borderRadius:'5px' }}              />
+           
+              <input
+                type="text"
+                placeholder='No. of Influencers'
+                value={clientFormData.noOfInfluencers}
+                onChange={(e) => setClientFormData({ ...clientFormData, noOfInfluencers: e.target.value })}
+                style={{ padding: '8px', fontSize: '14px', width: '96%', boxSizing: 'border-box', marginTop: '5px',border:'1px solid grey',borderRadius:'5px',marginBottom:'5px' }}              />
+         
+              {/* <input
+                type="text"
+                placeholder='Brand Details & Websites'
+                value={clientFormData.password}
+                onChange={(e) => setClientFormData({ ...clientFormData, password: e.target.value })}
+                style={{ padding: '8px', fontSize: '14px', width: '96%', boxSizing: 'border-box', marginTop: '5px',border:'1px solid grey',borderRadius:'5px',marginBottom:'5px' }}              /> */}
+            
+              <input
+                type="text"
+                placeholder='Brand Objective'
+                value={clientFormData.brandObjective}
+                onChange={(e) => setClientFormData({ ...clientFormData, brandObjective: e.target.value })}
+                style={{ padding: '8px', fontSize: '14px', width: '96%', boxSizing: 'border-box', marginTop: '5px',border:'1px solid grey',borderRadius:'5px',marginBottom:'5px' }}              />
+            
+              <input
+                type="text"
+                placeholder='Deliverable required (per influencer)'
+                value={clientFormData.dileverable}
+                onChange={(e) => setClientFormData({ ...clientFormData, dileverable: e.target.value })}
+                style={{ padding: '8px', fontSize: '14px', width: '96%', boxSizing: 'border-box', marginTop: '5px',border:'1px solid grey',borderRadius:'5px',marginBottom:'5px' }}              />
+            
+              <input
+                type="text"
+                placeholder='Genere'
+                value={clientFormData.genere}
+                onChange={(e) => setClientFormData({ ...clientFormData, genere: e.target.value })}
+                style={{ padding: '8px', fontSize: '14px', width: '96%', boxSizing: 'border-box', marginTop: '5px',border:'1px solid grey',borderRadius:'5px',marginBottom:'5px' }}              />
+     
+              <input
+                type="text"
+                placeholder='Landing cost for IRM'
+                value={clientFormData.landingCost}
+                onChange={(e) => setClientFormData({ ...clientFormData, landingCost: e.target.value })}
+                style={{ padding: '8px', fontSize: '14px', width: '96%', boxSizing: 'border-box', marginTop: '5px',border:'1px solid grey',borderRadius:'5px',marginBottom:'5px' }}              />
+
+
+              <input
+                type="text"
+                placeholder='Remarks (any other requirements)'
+                value={clientFormData.remarks}
+                onChange={(e) => setClientFormData({ ...clientFormData, remarks: e.target.value })}
+                style={{ padding: '8px', fontSize: '14px', width: '96%', boxSizing: 'border-box', marginTop: '5px',border:'1px solid grey',borderRadius:'5px',marginBottom:'5px' }}              />
+
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
               <button
                 type="submit"

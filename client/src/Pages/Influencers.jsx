@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, TableContainer, Table, Thead, Tr, Th, Tbody, Td, Spinner, Image, Flex, Text, Input, Select, Button } from '@chakra-ui/react';
 import ReportDetails from './ReportDetails';
 import InfluencerDetail from './InfluencerDetail';
+import { baseUrl } from '../Components/BaseUrl';
 
 const Influencer = () => {
   const [selectedReport, setSelectedReport] = useState(null);
@@ -13,6 +14,8 @@ const Influencer = () => {
     email: '',
     phone: '',
     message: '',
+    views:'',
+    followers:''
   });
   const [influencers, setInfluencers] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -22,7 +25,7 @@ const Influencer = () => {
 const handleInfluencerFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('https://unusual-puce-mite.cyclic.app/influencer/create', {
+      const response = await fetch(`${baseUrl}/influencer/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -41,6 +44,8 @@ const handleInfluencerFormSubmit = async (e) => {
         email: '',
         phone: '',
         message: '',
+        followers:'',
+        views:''
       });
       setShowInfluencerForm(false);
     } catch (error) {
@@ -50,7 +55,7 @@ const handleInfluencerFormSubmit = async (e) => {
 
 const fetchInfluencers = async () => {
 try {
-    const response = await fetch('https://unusual-puce-mite.cyclic.app/influencer/influencers');
+    const response = await fetch(`${baseUrl}/influencer/influencers`);
     if (!response.ok) {
     throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -132,6 +137,18 @@ fetchInfluencers();
               />
             </label>
 
+
+            <label style={{ display: 'block', margin: '10px 0', fontSize: '14px', fontWeight: 'bold' }}>
+              Followers:
+              <input
+                type="text"
+                value={influencerFormData.followers}
+                onChange={(e) => setInfluencerFormData({ ...influencerFormData, followers: e.target.value })}
+                style={{ padding: '8px', fontSize: '14px', width: '100%', boxSizing: 'border-box', marginTop: '5px' }}
+              />
+            </label>
+
+
             {/* YouTube Input */}
             <label style={{ display: 'block', margin: '10px 0', fontSize: '14px', fontWeight: 'bold' }}>
               YouTube:
@@ -161,6 +178,17 @@ fetchInfluencers();
                 type="text"
                 value={influencerFormData.phone}
                 onChange={(e) => setInfluencerFormData({ ...influencerFormData, phone: e.target.value })}
+                style={{ padding: '8px', fontSize: '14px', width: '100%', boxSizing: 'border-box', marginTop: '5px' }}
+              />
+            </label>
+
+
+            <label style={{ display: 'block', margin: '10px 0', fontSize: '14px', fontWeight: 'bold' }}>
+              Views:
+              <input
+                type="text"
+                value={influencerFormData.views}
+                onChange={(e) => setInfluencerFormData({ ...influencerFormData, views: e.target.value })}
                 style={{ padding: '8px', fontSize: '14px', width: '100%', boxSizing: 'border-box', marginTop: '5px' }}
               />
             </label>

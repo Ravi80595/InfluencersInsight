@@ -56,6 +56,10 @@ return (
       <GiPostStamp/>
       <Text pl={["0px","5px",'15px']} className="lhsName">Influencers</Text>
       </Flex>
+      <Flex _hover={{color:'black'}} id='usersBox' p='10px 17px' color={'white'} className='linkItem' onClick={()=>setShow("tracking")}>
+      <GiPostStamp/>
+      <Text pl={["0px","5px",'15px']} className="lhsName">Tracking</Text>
+      </Flex>
       </Box>
 </Box>
 
@@ -65,7 +69,7 @@ return (
 <Box id='rhsBox' w='84%' ml='16%' h='auto' backgroundColor={'#f9f9f9'}> 
 <Box id='navbarBox' backgroundColor={'#15283c'} p='0px 40px'>
 <Flex justifyContent='space-between' pt={3} mb={3}>
-<Text fontWeight='bold'>Welcome To Dashboard</Text>
+<Text fontWeight='bold'>Welcome To Laudco BD Team Dashboard</Text>
 </Flex>
 </Box>
 <Box id='rhsBody' m='30px' p='30px'>

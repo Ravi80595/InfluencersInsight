@@ -36,12 +36,10 @@ const Login = () => {
       if (response.ok) {
         const data = await response.json();
         console.log(data)
-        // Assuming your server sends back a token
         const token = data.token;
         localStorage.setItem('token', token);
         navigate('/dashboard');
       } else {
-        // Handle login failure
         console.error('Login failed');
         alert('Login failed. Please check your credentials and try again.');
       }
@@ -55,8 +53,8 @@ return (
     <Box m="auto">
         <Flex>
             <Box w={'50%'} p={'70px'} h={'100vh'} display={["none","none","block"]} color={'white'} background={'#272939'}>
-              <Heading mb={'20px'}>Ravi Sharma</Heading>
-              <Text fontSize={'20px'}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo deleniti quos, similique veniam itaque porro laboriosam, laudantium cum explicabo possimus et tempore excepturi aspernatur maxime, in aliquam provident rem temporibus iste tenetur.</Text>
+              <Heading mb={'20px'}>Your Go-To Hub for Influencer Insights</Heading>
+              <Text fontSize={'20px'}>Step into the world of (X), where the most innovative and iconic brands empower their marketing strategies through the magic of creators. Our platform is the engine driving impactful creator marketing, offering advanced cutting-edge data, industry-leading analytics, and customizable metrics to suit your brand needs.</Text>
                 <Image mt={'40px'} h="400px" src={Logins}/>
             </Box>
             <Box p={5} w={'50%'} pt={'70px'} textAlign={'center'}>

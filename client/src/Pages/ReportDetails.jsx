@@ -60,6 +60,22 @@ useEffect(() => {
   fetchReportDetails();
 }, []);
 
+// Function to extract Instagram username from URL and limit to 20 characters
+const getInstagramUsername = (url) => {
+  try {
+    const urlObject = new URL(url);
+    let username = urlObject.pathname.substring(1); // Remove leading "/"
+
+    // Remove trailing "/" if it exists
+    username = username.endsWith('/') ? username.slice(0, -1) : username;
+    // Limit username to 20 characters
+    username = username.substring(0, 10);
+    return username;
+  } catch (error) {
+    console.error('Error extracting Instagram username:', error);
+    return url; // Return the original URL if extraction fails
+  }
+};
 
 return (
   <>
@@ -67,7 +83,7 @@ return (
       <TabList pb={'20px'}>
         <Tab>Dashboard</Tab>
         <Tab>Influencers</Tab>
-        <Tab>Contents</Tab>
+        <Tab>Updates</Tab>
       </TabList>
       <TabPanels>
         <TabPanel>
@@ -164,9 +180,6 @@ return (
             <Button onClick={() => handleDeleteReport(report._id)}>Delete</Button>
           </Flex> */}
         </TabPanel>
-
-
-
         <TabPanel>
         <TableContainer>
               <Table size='sm'>
@@ -175,18 +188,16 @@ return (
                     <Th>Influencer Name</Th>
                     <Th>Instagram</Th>
                     <Th>Followers</Th>
-                    <Th>Average views</Th>
+                    <Th>Youtube</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
                   {reportData.influencers && reportData.influencers.map(ele => (
                     <Tr key={ele.name} cursor="pointer" _hover={{ backgroundColor: "#f3f4f6" }}>
                       <Td>{ele.name}</Td>
-                      <Td>{ele.instagram}</Td>
-                      <Td>{ele.views}</Td>
-                      <Td>
-                        {/* <Button onClick={() => { setSelectedReport(ele); setDisplayMode('details'); }}>More</Button> */}
-                      </Td>
+                      <Td color={'blue'}> <a href={ele.instagram} target='_blank'>{getInstagramUsername(ele.instagram)}</a></Td>
+                      <Td>{ele.followers}</Td>
+                      <Td>{ele.youtube}</Td>
                     </Tr>
                   ))}
                 </Tbody>
@@ -197,7 +208,7 @@ return (
 
 
         <TabPanel>
-          <p>three!</p>
+         {reportData.updates}
         </TabPanel>
       </TabPanels>
       </Tabs>

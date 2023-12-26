@@ -1,9 +1,10 @@
 import React from 'react'
-import { Tabs, TabList, TabPanels, Tab, TabPanel,Flex,Box,Text,TableContainer, Table, Thead, Tr, Th, Tbody, Td, Button,} from '@chakra-ui/react'
+import { Tabs, TabList, TabPanels, Tab, TabPanel,Flex,Box,Text,TableContainer, Table, Thead, Tr, Th, Tbody, Td, Button, useToast,} from '@chakra-ui/react'
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { baseUrl } from '../../Components/BaseUrl';
 import axios from 'axios';
+import ReportDetailBackend from './ReportDetailBackend';
 
 
 
@@ -26,7 +27,9 @@ const ClientDetails = ({clientDetail}) => {
         cpe:'',
         influencers: selectedInfluencers || [],
       });
+      const toast= useToast()
 
+      console.log('client details', clientDetail)
 
 
 const handleCheckboxChange = (influencerId) => {
@@ -98,18 +101,54 @@ useEffect(() => {
 
 const handleUpdateSuggestion = async (influencerID) => {
   try {
-
-    const response = await axios.patch(`${baseUrl}/user/suggested`, {
-      userID: clientDetail._id,
-      influencerID
+    const response = await fetch(`${baseUrl}/user/suggested`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userID: clientDetail._id, 
+        influencerID: influencerID,
+      }),
     });
-    console.log(response.data.msg); // Log success message
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const result = await response.json();
+    toast({
+      title: 'Influencer Suggested',
+      description: "Thanks for suggesting",
+      status: 'success',
+      duration: 9000,
+      isClosable: true,
+    })
+    // fetchData()
+    console.log(result.msg);
   } catch (error) {
-    console.error('Error updating profile:', error);
+    console.error('Error updating selected influencers:', error);
   }
 };
 
 // console.log(influencers)
+const getInstagramUsername = (url) => {
+  try {
+    const urlObject = new URL(url);
+    let username = urlObject.pathname.substring(1); // Remove leading "/"
+
+    // Remove trailing "/" if it exists
+    username = username.endsWith('/') ? username.slice(0, -1) : username;
+    // Limit username to 20 characters
+    username = username.substring(0, 10);
+    return username;
+  } catch (error) {
+    console.error('Error extracting Instagram username:', error);
+    return url; // Return the original URL if extraction fails
+  }
+};
+
+const reportMore = async(ele)=>{
+  <ReportDetailBackend report={ele}/>
+}
 
 
 return (
@@ -119,12 +158,13 @@ return (
         <Tab>Client Brief</Tab>
         <Tab>Campaigns</Tab>
         <Tab>Influencers</Tab>
+        <Tab>Influencers Selected/Rejected</Tab>
       </TabList>
       <TabPanels>
         <TabPanel>
-          <Text textAlign={'center'} fontWeight={'600'} mt={'10px'} mb={'10px'}>{clientDetail.name}</Text>
-
-          <Box>
+          <Text fontWeight={'600'} mt={'10px'} mb={'10px'}> Client Name : {clientDetail.name}</Text>
+          <Box border={'2px solid grey'} p={'7px'}>
+            <Text>Brief by BD Team</Text>
             <Flex justifyContent={'space-around'} mt={'15px'}> 
               <Box>
                 <Text mt={'10px'}>Brand Details : {clientDetail.brandName}</Text>
@@ -140,6 +180,28 @@ return (
               </Box>
             </Flex>
           </Box>
+          {clientDetail.reports && clientDetail.briefs.map(ele => (
+          <Box border={'2px solid grey'} p={'7px'} mt={'10px'}>
+            <Text>Brief by client</Text>
+            <Flex justifyContent={'space-around'} mt={'15px'}> 
+              <Box>
+                <Text mt={'10px'}>Agency Name : {ele.agencyName}</Text>
+                <Text mt={'10px'}>Campaign Name : {ele.briefName}</Text>
+                <Text mt={'10px'}>Category : {ele.briefCategory}</Text>
+                <Text mt={'10px'}>Deal Type : {ele.briefDealType}</Text>
+                <Text mt={'10px'}>Platform : {ele.briefPlatform}</Text>
+                <Text mt={'10px'}> </Text>
+              </Box>
+              <Box>
+                <Text mt={'10px'}>Influencers : {ele.briefInfluencers}</Text>
+                <Text mt={'10px'}>Genre : {ele.briefGenre}</Text>
+                <Text mt={'10px'}> Location : {ele.location}</Text>
+                <Text mt={'10px'}>Metrics : {ele.briefMetrics}</Text>
+                <Text mt={'10px'}> </Text>
+              </Box>
+            </Flex>
+          </Box>
+        ))}
         </TabPanel>
         <TabPanel>
             <Flex justifyContent={'space-between'}>
@@ -151,20 +213,9 @@ return (
             <Button onClick={() => setShowForm(true)}>New Campaign</Button>
             </Flex>
             <hr />
-            {/* <TableContainer>
-              <Table size='sm'>
-                <Thead>
-                  <Tr textAlign='center'>
-                    <Th>Name</Th>
-                    <Th>Starting Date</Th>
-                    <Th>Posts Live</Th>
-                    <Th>Influencers Live</Th>
-                  </Tr>
-                </Thead>
-                <Tbody> */}
                 <Box mt={'25px'} border={'2px solid grey'} p={'15px'} borderRadius={'5px'}>
                   {clientDetail.reports && clientDetail.reports.map(ele => (
-                    <Box key={ele.brandName} mt={'25px'} border={'2px solid grey'} p={'15px'} borderRadius={'5px'}>
+                    <Box key={ele.brandName} mt={'25px'} border={'2px solid grey'} p={'15px'} borderRadius={'5px'} onClick={()=>reportMore(ele)}>
                         <Flex justifyContent={'space-around'}>
                           <Box>
                             <Text> Campaign Name : {ele.reportName}</Text>
@@ -209,16 +260,79 @@ return (
                 </Thead>
                 <Tbody>
                   {influencers && influencers.map(ele => (
-                    <Tr key={ele.name} cursor="pointer" _hover={{ backgroundColor: "#f3f4f6" }}>
+                    <Tr key={ele._id} cursor="pointer" _hover={{ backgroundColor: "#f3f4f6" }}>
                       <Td>{ele.name}</Td>
-                      <Td>{ele.instagram}</Td>
+                      <Td color={'blue'}> <a href={ele.instagram} target='_blank'>{getInstagramUsername(ele.instagram)}</a></Td> 
                       <Td>{ele.phone}</Td>
-                      <Td><Button onClick={(ele)=>handleUpdateSuggestion(ele._id)}>Suggest</Button></Td>
+                      <Td><Button onClick={()=>handleUpdateSuggestion(ele._id)}>Suggest</Button></Td>
                     </Tr>
                   ))}
                 </Tbody>
               </Table>
             </TableContainer>
+        </TabPanel>
+
+
+
+
+        <TabPanel>
+        <Flex gap={'10px'}>
+            <Box w={'50%'} p={'30px'} borderRadius={'5px'}>
+              <Box background={'black'} color={'white'} cursor={'pointer'} p={'10px'} borderRadius={'5px'}>
+                <Text>Selected Influencers :  {clientDetail && clientDetail.selected.length}</Text>
+              </Box>
+        <Box>
+        <TableContainer background={'#f2f2f2'}>
+          <Table size='sm'>
+            <Thead>
+              <Tr textAlign='center'>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {clientDetail &&
+                clientDetail.selected.map((ele) => (
+                  <Tr key={ele.name}>
+                    <Td>{ele.name}</Td>
+                    <Td color={'blue'}> <a href={ele.instagram} target='_blank'>{getInstagramUsername(ele.instagram)}</a></Td>                 
+                     <Td>{ele.followers}</Td>
+                    <Td>
+                      {/* <ImCross cursor={'pointer'} onClick={()=>removeSelected(ele._id)}/> */}
+                    </Td>
+                  </Tr>
+                ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
+        </Box>
+            </Box>
+            <Box w={'50%'} p={'30px'}>
+              <Box background={'black'} color={'white'} cursor={'pointer'} p={'10px'} borderRadius={'5px'}>
+                <Text>Rejected Influencers : {clientDetail && clientDetail.rejected.length}</Text>
+              </Box>
+              <TableContainer background={'#f2f2f2'}>
+              <Table size='sm'>
+                <Thead>
+                  <Tr textAlign='center'>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                {
+                  clientDetail && clientDetail.rejected.map(ele=>(
+                      <Tr>
+                        <Td>{ele.name}</Td>
+                        <Td color={'blue'}> <a href={ele.instagram} target='_blank'>{getInstagramUsername(ele.instagram)}</a></Td>      
+                        <Td>{ele.followers}</Td>
+                        <Td>
+                         {/* <ImCross onClick={()=>removeRejected(ele._id)} /> */}
+                        </Td>
+                      </Tr>
+                  ))
+                }
+                </Tbody>
+              </Table>
+            </TableContainer>
+            </Box>
+        </Flex>
         </TabPanel>
       </TabPanels>
       </Tabs>

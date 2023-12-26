@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Tabs, TabList, TabPanels, Tab, TabPanel,Flex,Box,Text,TableContainer, Table, Thead, Tr, Th, Tbody, Td, Button,useToast} from '@chakra-ui/react'
+import { Tabs, TabList, TabPanels, Tab, TabPanel,Flex,Box,Text,TableContainer, Table, Thead, Tr, Th, Tbody, Td, Button,useToast, Textarea} from '@chakra-ui/react'
 import { FaRegHeart } from "react-icons/fa";
 import { FaCertificate } from "react-icons/fa";
 import { FaRegComment } from "react-icons/fa";
@@ -15,11 +15,37 @@ const ReportDetailBackend = ({ report }) => {
   const [reportData,setReportData]=useState([])
   const toast = useToast()
   const [editMode, setEditMode] = useState(false);
-  const [influencers, setInfluencers] = useState(report.influencersLive);
-  const [postsLive, setPostsLive] = useState(report.postsLive);
-  const [reach, setReach] = useState(report.reach);
-  const [budget, setBudget] = useState(report.budget);
+  const [showForm, setShowForm] = useState(false);
+  const [influencers, setInfluencers] = useState([]);
+  const [showInfluencers, setShowInfluencers] = useState(false);
+  const [selectedInfluencers, setSelectedInfluencers] = useState([]);
+  const [formData, setFormData] = useState({
+    reportName: '',
+    postsLive: '',
+    reach: '',
+    budget: '',
+    engagements: '',
+    influencersLive:'',
+    likes:'',
+    comments:'',
+    engagementRate:'',
+    cpe:'',
+    influencers: selectedInfluencers || [],
+    updates:''
+  });
 
+
+  const handleCheckboxChange = (influencerId) => {
+    setSelectedInfluencers((prevSelected) => {
+      if (prevSelected.includes(influencerId)) {
+        // If already selected, remove it
+        return prevSelected.filter((id) => id !== influencerId);
+      } else {
+        // If not selected, add it
+        return [...prevSelected, influencerId];
+      }
+    });
+  };
 
 const handleDeleteReport = async (reportId) => {
   try {
@@ -47,15 +73,7 @@ const handleDeleteReport = async (reportId) => {
 };
 
 
-const handleSaveChanges = async () => {
-  // Implement logic to send a PUT request and save changes to the server
-  // Update the state and exit edit mode
-  setEditMode(false);
-};
-
-
 useEffect(() => {
-  // Fetch the report details by its ID
   const fetchReportDetails = async () => {
     try {
       const response = await fetch(`${baseUrl}/report/${report._id}`);
@@ -74,6 +92,48 @@ useEffect(() => {
 }, []);
 
 
+useEffect(() => {
+  const fetchInfluencers = async () => {
+    try {
+      const response = await fetch(`${baseUrl}/influencer/influencers`);
+      const influencersData = await response.json();
+      setInfluencers(influencersData);
+    } catch (error) {
+      console.error('Error fetching influencers:', error);
+    }
+  };
+  fetchInfluencers();
+}, []);
+
+const handleFormSubmit = async (e) => {
+  e.preventDefault();
+  console.log(formData,report._id)
+  try {
+    const response = await fetch(`${baseUrl}/report/update/${report._id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
+    if (response.ok) {
+      toast({
+        title: 'Report Updated.',
+        description: 'Report updated successfully.',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      });
+      setEditMode(false);
+    } else {
+      console.error('Error updating report:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Error updating report:', error);
+  }
+};
+
+
 return (
   <>
       <Tabs>
@@ -85,88 +145,161 @@ return (
       <TabPanels>
         <TabPanel>
         {editMode ? (
-              // <form>
-              //   <label>
-              //     Influencers Live:
-              //     <input type="text" value={influencers} onChange={(e) => setInfluencers(e.target.value)} />
-              //   </label>
-              //   <Button onClick={handleSaveChanges}>Save</Button>
-              //   <Button onClick={() => setEditMode(false)}>Cancel</Button>
-              // </form>
+ <div
+        style={{
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '40%',
+          backgroundColor: '#fff',
+          padding: '20px',
+          border: '1px solid #ccc',
+          borderRadius: '8px',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+          zIndex: '1000',
+        }}
+        >
+        <form onSubmit={handleFormSubmit}>
+            {/* <input
+              type="text"
+              value={formData.reportName}
+              placeholder='Campaign Name'
+              onChange={(e) => setFormData({ ...formData, reportName: e.target.value })}
+              style={{ padding: '8px', fontSize: '14px', width: '96%', boxSizing: 'border-box', marginTop: '5px',border:'1px solid grey',borderRadius:'5px',marginBottom:'5px' }}
+            /> */}
+            <input
+              type="text"
+              value={formData.influencersLive}
+              placeholder='Updated Influencers Live'
+              onChange={(e) => setFormData({ ...formData, influencersLive: e.target.value })}
+              style={{ padding: '8px', fontSize: '14px', width: '47%', boxSizing: 'border-box', margin: '5px',border:'1px solid grey',borderRadius:'5px' }}
+            />
+            <input
+              type="text"
+              value={formData.postsLive}
+              placeholder='Update Posts Live'
+              onChange={(e) => setFormData({ ...formData, postsLive: e.target.value })}
+              style={{ padding: '8px', fontSize: '14px', width: '47%', boxSizing: 'border-box', margin: '5px',border:'1px solid grey',borderRadius:'5px' }}
+            />
 
+            <input
+              type="text"
+              value={formData.reach}
+              placeholder='New Reach'
+              onChange={(e) => setFormData({ ...formData, reach: e.target.value })}
+              style={{ padding: '8px', fontSize: '14px', width: '47%', boxSizing: 'border-box', margin: '5px',border:'1px solid grey',borderRadius:'5px' }}
+            />
 
+            <input
+              type="text"
+              value={formData.budget}
+              placeholder='New Budget'
+              onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
+              style={{ padding: '8px', fontSize: '14px', width: '47%', boxSizing: 'border-box', margin: '5px',border:'1px solid grey',borderRadius:'5px' }}
+            />
 
-<form onSubmit={handleSaveChanges} style={{width:'50%',margin:'auto',border:'2px solid grey',padding:'20px',borderRadius:'20px'}}>
-          
-            <label style={{ display: 'block', margin: '10px 0', fontSize: '14px', fontWeight: 'bold' }}>
-              Client Name:
-              <input
-                type="text"
-                value={influencers}
-                onChange={(e) => setInfluencers( e.target.value)}
-                style={{ padding: '8px', fontSize: '14px', width: '100%', boxSizing: 'border-box', marginTop: '5px' }}
-              />
-            </label>
-            <label style={{ display: 'block', margin: '10px 0', fontSize: '14px', fontWeight: 'bold' }}>
-              Posts Live
-              <input
-                type="text"
-                value={postsLive}
-                onChange={(e) => setPostsLive(e.target.value)}
-                style={{ padding: '8px', fontSize: '14px', width: '100%', boxSizing: 'border-box', marginTop: '5px' }}
-              />
-            </label>
-            <label style={{ display: 'block', margin: '10px 0', fontSize: '14px', fontWeight: 'bold' }}>
-              Reach
-              <input
-                type="text"
-                value={reach}
-                onChange={(e) => setReach( e.target.value)}
-                style={{ padding: '8px', fontSize: '14px', width: '100%', boxSizing: 'border-box', marginTop: '5px' }}
-              />
-            </label>
-            <label style={{ display: 'block', margin: '10px 0', fontSize: '14px', fontWeight: 'bold' }}>
-              Budget
-              <input
-                type="text"
-                value={budget}
-                onChange={(e) => setBudget( e.target.value)}
-                style={{ padding: '8px', fontSize: '14px', width: '100%', boxSizing: 'border-box', marginTop: '5px' }}
-              />
-            </label>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
-              <button
-                type="submit"
-                style={{
-                  padding: '10px',
-                  backgroundColor: '#4CAF50',
-                  color: '#fff',
-                  borderRadius: '5px',
-                  cursor: 'pointer',
-                  border: 'none',
-                  fontSize: '14px',
-                }}
-              >
-                Submit
-              </button>
-              <button
-                type="button"
-                onClick={() => setEditMode(false)}
-                style={{
-                  padding: '10px',
-                  backgroundColor: '#ccc',
-                  color: '#fff',
-                  borderRadius: '5px',
-                  cursor: 'pointer',
-                  border: 'none',
-                  fontSize: '14px',
-                }}
-              >
-                Close
-              </button>
+            <input
+              type="text"
+              value={formData.engagements}
+              placeholder='New Engagements'
+              onChange={(e) => setFormData({ ...formData, engagements: e.target.value })}
+              style={{ padding: '8px', fontSize: '14px', width: '47%', boxSizing: 'border-box', margin: '5px',border:'1px solid grey',borderRadius:'5px' }}
+            />
+
+            <input
+              type="text"
+              value={formData.likes}
+              placeholder='New Likes'
+              onChange={(e) => setFormData({ ...formData, likes: e.target.value })}
+              style={{ padding: '8px', fontSize: '14px', width: '47%', boxSizing: 'border-box', margin: '5px',border:'1px solid grey',borderRadius:'5px' }}
+            />
+
+            <input
+              type="text"
+              value={formData.comments}
+              placeholder='New Comments'
+              onChange={(e) => setFormData({ ...formData, comments: e.target.value })}
+              style={{ padding: '8px', fontSize: '14px', width: '96%', boxSizing: 'border-box', margin: '5px',border:'1px solid grey',borderRadius:'5px'}}
+            />
+
+            <input
+              type="text"
+              value={formData.engagementRate}
+              placeholder='New Engagement Rate'
+              onChange={(e) => setFormData({ ...formData, engagementRate: e.target.value })}
+              style={{ padding: '8px', fontSize: '14px', width: '96%', boxSizing: 'border-box', margin: '5px',border:'1px solid grey',borderRadius:'5px' }}
+            />
+
+          <Textarea
+            value={formData.updates}
+            placeholder='Updates'
+            onChange={(e) => setFormData({ ...formData, updates: e.target.value })}
+            style={{ padding: '8px', fontSize: '14px', width: '96%', boxSizing: 'border-box', margin: '5px',border:'1px solid grey',borderRadius:'5px' }}
+          />
+
+            <div style={{ maxHeight: showInfluencers ? '200px' : '0', overflowY: 'auto', transition: 'max-height 0.5s ease' }}>
+              {influencers.map((influencer) => (
+                <div key={influencer._id}>
+                  <input
+                    type="checkbox"
+                    id={influencer._id}
+                    checked={selectedInfluencers.includes(influencer._id)}
+                    onChange={() => handleCheckboxChange(influencer._id)}
+                  />
+                  <label htmlFor={influencer._id}>{influencer.name}</label>
+                </div>
+              ))}
             </div>
-            </form>
-            
+            <button
+              type="button"
+              onClick={() => setShowInfluencers(!showInfluencers)}
+              style={{
+                padding: '5px',
+                backgroundColor: '#4CAF50',
+                color: '#fff',
+                borderRadius: '5px',
+                cursor: 'pointer',
+                border: 'none',
+                fontSize: '12px',
+                marginTop: '5px',
+              }}
+            >
+              {showInfluencers ? 'Hide Influencers' : 'Select Influencers'}
+            </button>
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
+            <button type="submit"
+              style={{
+                padding: '10px',
+                backgroundColor: '#4CAF50',
+                color: '#fff',
+                borderRadius: '5px',
+                cursor: 'pointer',
+                border: 'none',
+                fontSize: '14px',
+              }}
+            >
+              Submit
+            </button>
+            <button
+              type="button"
+              onClick={() => setEditMode(false)}
+              style={{
+                padding: '10px',
+                backgroundColor: '#ccc',
+                color: '#fff',
+                borderRadius: '5px',
+                cursor: 'pointer',
+                border: 'none',
+                fontSize: '14px',
+              }}
+            >
+              Close
+            </button>
+          </div>
+        </form>
+        </div>     
 
             ) : (
           <Box>

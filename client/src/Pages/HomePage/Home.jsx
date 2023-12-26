@@ -3,7 +3,7 @@ import Navbar from '../../Components/Navbar'
 import { Box, Image,Flex,Button,Text } from '@chakra-ui/react'
 import Homes from '../../Images/Homes.png'
 import { Link } from 'react-router-dom'
-
+import Footer from '../../Components/Footer'
 const Home = () => {
 
 
@@ -21,7 +21,7 @@ const Home = () => {
     right: 0,
     bottom: 0,
     left: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Adjust the last value for the overlay opacity
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   };
 
 
@@ -31,10 +31,8 @@ return (
     <Flex justifyContent='space-between' w='100%' h={20}>
       <Flex  w={["40%","40%",'50%']} p={5} gap={'30px'}>
         <Image display={["none","none","block"]} src="https://www.laudco.com/wp-content/uploads/2021/10/cropped-NkqJmjVfVYE9cegFgw0V-2.png"/>
-        {/* <Heading fontFamily='cursive' fontSize={["20px","10px","30px"]}>Socialpshcyo</Heading> */}
       </Flex>
       <Flex w={["70%","40%",'30%']} p={5} justifyContent="space-evenly" fontSize='20px' fontWeight={'500'}>
-        {/* <Button display={["none","none","block"]} onClick={()=>alert("Please Signup to create Account")}>Create Account</Button> */}
         <Text>Home</Text>
         <Text>About</Text>
         <Link to='/login'>
@@ -47,33 +45,18 @@ return (
 
 
 
-    <Box pt={'50px'}> 
-    <Flex h={'100vh'} justifyContent={'space-around'} bgRepeat={'no-repeat'} bgSize={'cover'} backgroundImage={Homes} >
-      <Box w={'50%'}>
-        {/* <Image src={Homes}/> */}
+    <Box pt={'90px'} backgroundColor={'black'} h={'90vh'}> 
+ <Flex justifyContent={'space-around'}>
+      <Box w={'50%'} mt={'10px'} backgroundImage={Homes} backgroundSize={'cover'} backgroundPosition={'center'} backgroundRepeat={'no-repeat'}>
+
       </Box>
-      {/* <Box mt={'90px'} w={'40%'} color={'white'} >
-        <Text fontSize={'42px'} mt={'54px'} fontWeight={'600'}>Where Influencers <br/> Collaboration Happen</Text>
-        <Text fontSize={'25px'} mt={'10px'}>Qoruz helps brands to find, connect and collaborate with the most relevant influencers.</Text>
-        <Flex mt={'25px'} mb={'50px'} gap={'20px'}>
-        <Button fontSize={'16px'} fontWeight={'500'} pt={'12px'} pb={'12px'} color={'#181A20'} backgroundColor={'#FCD535'}>Know More</Button>
-        <Button fontSize={'16px'} fontWeight={'500'} pt={'12px'} pb={'12px'} color={'#181A20'} backgroundColor={'#FCD535'}>Login</Button>
-        </Flex>
-      </Box> */}
-    </Flex>
-
- {/* <Flex style={containerStyle} justifyContent={'space-around'}> */}
-      {/* Background Image Overlay */}
-      {/* <div style={overlayStyle}></div> */}
-
-      {/* Your content goes here */}
-      {/* <Box w={'50%'}></Box>
       <Box mt={'90px'} w={'40%'} color={'white'}>
         <Text fontSize={'42px'} mt={'54px'} fontWeight={'600'} color={'white'}>   
-          Where Influencers <br /> Collaboration Happen
+        Influencer Marketing, Collabs, Insights, & More
         </Text>
         <Text fontSize={'25px'} mt={'10px'}>
-          Qoruz helps brands to find, connect and collaborate with the most relevant influencers.
+        Effortless Performance Tracking:
+        Monitor and optimize campaigns seamlessly.        
         </Text>
         <Flex mt={'25px'} mb={'50px'} gap={'20px'}>
           <Button fontSize={'16px'} fontWeight={'500'} pt={'12px'} pb={'12px'} color={'#181A20'} backgroundColor={'#FCD535'}>
@@ -84,7 +67,7 @@ return (
           </Button>
         </Flex>
       </Box>
-    </Flex> */}
+    </Flex>
 
 
 
@@ -128,6 +111,37 @@ return (
         </Flex> 
       </Flex>
     </Box>
+
+
+
+    <Box p={4} w='80%' m='auto' mt={'10px'} mb={'30px'}>
+      <Text mb={'75px'} mt={'50px'} textAlign={'center'} fontSize={'26px'}>Choose What Describes You Best</Text>
+    <Flex direction={['column','column','row','row']} gap={20} justifyContent={'space-around'}>
+      <Box _hover={{transform:'translateY(-15px)',transition:'transform 0.5s'}} background={'white'} borderRadius={10} border={'2px solid grey'} p='15px'>
+         <Image src={'https://www.laudco.com/wp-content/uploads/elementor/thumbs/chat-pesjux0tqn62pjldifk87lymo9yznytqanritam6oo.png'}/>
+      <Text pb={2} fontWeight={600} fontSize={'24px'} pt={'25px'}>For Influencers</Text>
+        <li>Unlimited Campaign Opportunities</li>
+        <li>Work with Multiple Brands</li>
+        <li>Earn What You Deserve</li>
+    </Box>
+    <Box _hover={{transform:'translateY(-15px)',transition:'transform 0.5s'}} background={'white'} borderRadius={10} border={'2px solid grey'} p='15px'>
+         <Image src={'https://www.laudco.com/wp-content/uploads/elementor/thumbs/target-2-peskhh5dri1tcmtps6lw1x0vx6s4egdtebf1gd61co.png'}/>
+      <Text pb={2} fontWeight={600} fontSize={'24px'} pt={'25px'}>For Businesses</Text>
+        <li>Engage with UNLIMITED Influencers</li>
+        <li>EAuthentic Influencer Insights</li>
+        <li>Generate REAL-TIME Campaign Analytics</li>
+    </Box>
+    <Box _hover={{transform:'translateY(-15px)',transition:'transform 0.5s'}} background={'white'} borderRadius={10} border={'2px solid grey'} p='15px'>
+         <Image src={'https://www.laudco.com/wp-content/uploads/elementor/thumbs/transparency-peskblnp1s0asdcx356tywe69hqjak27l8msh3vm8o.png'}/>
+         
+      <Text pb={2} fontWeight={600} fontSize={'24px'} pt={'25px'}>For Agency</Text>
+        <li>Streamlined Influencer Marketing Tool</li>
+        <li>Comprehensive Collaboration</li>
+        <li>Enhanced Reporting and Analytics</li>
+    </Box>
+    </Flex>
+    </Box>
+      <Footer/>
     </>
   )
 }

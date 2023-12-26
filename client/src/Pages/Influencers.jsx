@@ -70,6 +70,22 @@ useEffect(() => {
 fetchInfluencers();
 }, []);
 
+const getInstagramUsername = (url) => {
+  try {
+    const urlObject = new URL(url);
+    let username = urlObject.pathname.substring(1); // Remove leading "/"
+
+    // Remove trailing "/" if it exists
+    username = username.endsWith('/') ? username.slice(0, -1) : username;
+    // Limit username to 20 characters
+    username = username.substring(0, 10);
+    return username;
+  } catch (error) {
+    console.error('Error extracting Instagram username:', error);
+    return url; // Return the original URL if extraction fails
+  }
+};
+
   return (
     <div style={{ fontFamily: 'Arial, sans-serif', color: '#333' }}>
       {/* Navbar */}
@@ -254,7 +270,7 @@ fetchInfluencers();
                 <Thead>
                   <Tr textAlign='center'>
                     <Th>Influencer Name</Th>
-                    <Th>Email</Th>
+                    <Th>Instagram</Th>
                     <Th>Phone No.</Th>
                     <Th>Details</Th>
                   </Tr>
@@ -263,7 +279,7 @@ fetchInfluencers();
                   {influencers && influencers.map(ele => (
                     <Tr key={ele.name} cursor="pointer" _hover={{ backgroundColor: "#f3f4f6" }}>
                       <Td>{ele.name}</Td>
-                      <Td>{ele.email}</Td>
+                      <Td color={'blue'}> <a href={ele.instagram} target='_blank'>{getInstagramUsername(ele.instagram)}</a></Td>
                       <Td>{ele.phone}</Td>
                       <Td>
                         <Button onClick={() => { setSelectedReport(ele); setDisplayMode('details'); }}>More</Button>

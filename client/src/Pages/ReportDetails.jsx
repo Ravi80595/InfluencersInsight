@@ -11,7 +11,7 @@ import { VscGitPullRequestCreate } from "react-icons/vsc";
 import { FaTelegramPlane } from "react-icons/fa";
 import { RiMoneyDollarCircleFill } from "react-icons/ri";
 import { baseUrl } from '../Components/BaseUrl';
-import { FaDownload } from "react-icons/fa6";
+import PdfDownloadButton from '../Components/PdfDownloadButton';
 
 
 const ReportDetails = ({ report }) => {
@@ -80,7 +80,8 @@ const getInstagramUsername = (url) => {
 return (
   <>
       <Flex justifyContent={'end'} mt={'-15px'}>
-      <FaDownload />
+      {/* <FaDownload /> */}
+      <PdfDownloadButton contentId='report' fileName='report_details.pdf'/>
       </Flex>
       <Tabs>
       <TabList pb={'20px'}>
@@ -90,7 +91,7 @@ return (
       </TabList>
       <TabPanels>
         <TabPanel>
-          <Box>
+          <Box id='report'>
             <Flex justifyContent={'space-around'}>
               <Box border={'2px solid grey'} p={'17px'} borderRadius={'10px'} w={'22%'}>
                 <Flex justifyContent={'space-between'}>

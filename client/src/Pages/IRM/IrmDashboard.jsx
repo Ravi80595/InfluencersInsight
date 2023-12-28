@@ -14,6 +14,7 @@ import ClientCreateCampaign from '.././ClientCreateCampaign'
 import Briefs from './Briefs'
 import IrmInfluencers from './IrmInfluencers'
 import Admin from '../Admin/Admin'
+import IrmClients from './IrmClients'
 
 
 const IrmDashboard = () => {
@@ -104,7 +105,7 @@ return (
 <Box id='rhsBody' m='30px' p='30px'>
 
 {
-show==="Users"?<Briefs/>:show==="Posts"?<IrmInfluencers/>:show==="create"?<Admin data={profileData}/>:<h1>Fearture Available Soon</h1>
+show==="Users"?<IrmClients/>:show==="Posts"?<IrmInfluencers/>:show==="create"?<Admin data={profileData}/>:<h1>Fearture Available Soon</h1>
 }
 </Box>
 </Box>

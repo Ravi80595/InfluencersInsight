@@ -30,18 +30,20 @@ const ReportDetailBackend = ({ report }) => {
     comments:'',
     engagementRate:'',
     cpe:'',
-    influencers: selectedInfluencers || [],
+    influencers: selectedInfluencers,
     updates:''
   });
 
+  console.log(formData)
+  // console.log(influencers)
+  console.log(selectedInfluencers)
 
   const handleCheckboxChange = (influencerId) => {
+    console.log(influencerId,'id')
     setSelectedInfluencers((prevSelected) => {
       if (prevSelected.includes(influencerId)) {
-        // If already selected, remove it
         return prevSelected.filter((id) => id !== influencerId);
       } else {
-        // If not selected, add it
         return [...prevSelected, influencerId];
       }
     });
@@ -107,14 +109,18 @@ useEffect(() => {
 
 const handleFormSubmit = async (e) => {
   e.preventDefault();
-  console.log(formData,report._id)
+  // console.log(formData,report._id)
   try {
+    const updatedFormData = {
+      ...formData,
+      influencers: selectedInfluencers,
+    };
     const response = await fetch(`${baseUrl}/report/update/${report._id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(updatedFormData),
     });
     if (response.ok) {
       toast({
@@ -130,6 +136,20 @@ const handleFormSubmit = async (e) => {
     }
   } catch (error) {
     console.error('Error updating report:', error);
+  }
+};
+
+
+const getInstagramUsername = (url) => {
+  try {
+    const urlObject = new URL(url);
+    let username = urlObject.pathname.substring(1); 
+    username = username.endsWith('/') ? username.slice(0, -1) : username;
+    username = username.substring(0, 10);
+    return username;
+  } catch (error) {
+    console.error('Error extracting Instagram username:', error);
+    return url;
   }
 };
 
@@ -336,7 +356,7 @@ return (
                 <Flex justifyContent={'space-between'}>
                   <Box>
                 <Text fontSize={'16px'} fontWeight={'400'} pb={'10px'}>BUDGET SPENT</Text>
-                <Text fontSize={'18px'} fontWeight={'500'}>{report.budget} RUPIYA</Text>
+                <Text fontSize={'18px'} fontWeight={'500'}>{report.budget} RS</Text>
                   </Box>
                   <FaCertificate/>
                 </Flex>
@@ -415,7 +435,7 @@ return (
                     <Th>Influencer Name</Th>
                     <Th>Email</Th>
                     <Th>Phone No.</Th>
-                    <Th>Details</Th>
+                    <Th>Instagram</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -424,9 +444,7 @@ return (
                       <Td>{ele.name}</Td>
                       <Td>{ele.email}</Td>
                       <Td>{ele.phone}</Td>
-                      <Td>
-                        {/* <Button onClick={() => { setSelectedReport(ele); setDisplayMode('details'); }}>More</Button> */}
-                      </Td>
+                      <Td color={'blue'}> <a href={ele.instagram} target='_blank'>{getInstagramUsername(ele.instagram)}</a></Td>
                     </Tr>
                   ))}
                 </Tbody>
@@ -437,7 +455,7 @@ return (
 
 
         <TabPanel>
-          <p>three!</p>
+          <Text>{reportData.updates}</Text>
         </TabPanel>
       </TabPanels>
       </Tabs>

@@ -13,7 +13,10 @@ const ClientAllInfluencers = ({data}) => {
     const [rowBorder,setRowBorder]=useState('0px')
     const [query, setQuery] = useState('');
     const toast=useToast()
-    
+    const [allInfluencers,setAllInfluencers]=useState([])
+
+
+
     const handleToggleRow = (rowId) => {
       setExpandedRows((prevRows) => (prevRows.includes(rowId) ? prevRows.filter((id) => id !== rowId) : [...prevRows, rowId]));
       setRowBorder((prevBorder)=> (prevBorder === '0px' ? '2px sold grey': ' 0px'))
@@ -29,6 +32,7 @@ const fetchInfluencers = async () => {
         const influencersData = await response.json();
         setIsLoading(false)
         setInfluencers(influencersData);
+        setAllInfluencers(influencersData)
     } catch (error) {
       setIsLoading(false)
         console.error('Error fetching influencers:', error);
@@ -121,8 +125,22 @@ const getInstagramUsername = (url) => {
 };
 
 
+const formatFollowersCount=(followersCount)=> {
+  if (followersCount < 1000) {
+    return followersCount.toString(); // No conversion needed for less than 1K
+  } else if (followersCount < 1000000) {
+    // Convert to K format
+    const countInK = (followersCount / 1000).toFixed(1);
+    return `${countInK}K`;
+  } else {
+    // Convert to M format
+    const countInM = (followersCount / 1000000).toFixed(1);
+    return `${countInM}M`;
+  }
+}
+
+
 const handleSearch = async (e) => {
-  console.log(e);
   try {
     const response = await fetch(`${baseUrl}/influencer/search/${e}`);
     if (!response.ok) {
@@ -136,6 +154,89 @@ const handleSearch = async (e) => {
 };
 
 
+const states = [
+  "Andhra Pradesh",
+  "Arunachal Pradesh",
+  "Assam",
+  "Bihar",
+  "Chhattisgarh",
+  "Goa",
+  "Gujarat",
+  "Haryana",
+  "Himachal Pradesh",
+  "Jharkhand",
+  "Karnataka",
+  "Kerala",
+  "Madhya Pradesh",
+  "Maharashtra",
+  "Manipur",
+  "Meghalaya",
+  "Mizoram",
+  "Nagaland",
+  "Odisha",
+  "Punjab",
+  "Rajasthan",
+  "Sikkim",
+  "Tamil Nadu",
+  "Telangana",
+  "Tripura",
+  "Uttar Pradesh",
+  "Uttarakhand",
+  "West Bengal",
+  "Andaman and Nicobar Islands",
+  "Chandigarh",
+  "Dadra and Nagar Haveli and Daman and Diu",
+  "Lakshadweep",
+  "Delhi",
+  "Puducherry"
+];
+
+const [selectedState, setSelectedState] = useState('');
+const [selectedGenre, setSelectedGenre] = useState('');
+
+
+
+const handleStateChange = async (event) => {
+  const selectedValue = event.target.value;
+  setSelectedState(selectedValue);
+};
+
+const handleGenreChange = async (selectedValue) => {
+  setSelectedGenre(selectedValue);
+};
+
+const applyFilters = async () => {
+  try {
+    let response;
+
+    if (selectedState === '' && selectedGenre === '') {
+      setInfluencers(allInfluencers);
+    } else {
+      if (selectedState !== '' && selectedGenre === '') {
+        response = await fetch(`${baseUrl}/influencer/searchState/${encodeURIComponent(selectedState)}`);
+      } else if (selectedState === '' && selectedGenre !== '') {
+        response = await fetch(`${baseUrl}/influencer/searchGenre/${encodeURIComponent(selectedGenre)}`);
+      } else {
+        response = await fetch(`${baseUrl}/influencer/search/${encodeURIComponent(selectedState)}/${encodeURIComponent(selectedGenre)}`);
+      }
+
+      if (response.ok) {
+        const data = await response.json();
+        setInfluencers(data);
+      } else {
+        console.error('Error fetching influencers:', response.status);
+      }
+    }
+  } catch (error) {
+    console.error('Error fetching influencers:', error);
+  }
+};
+
+useEffect(() => {
+  applyFilters();
+}, [selectedState, selectedGenre]);
+
+
 
 return (
     <Box>
@@ -146,17 +247,33 @@ return (
     </Flex>
 
     <Flex mb={10}mt={5} justifyContent="space-between">
-        <Select w={["40%","40%","40%","20%"]} fontSize={["10px","10px","10px","20px"]} >
-          <option value="">Filter by language</option>
-          <option value="">LTH</option>
-          <option value="">HTL</option>
-        </Select>
-        <Select w={["40%","40%","40%","20%"]} fontSize={["10px","10px","10px","20px"]}>
-          <option value="">FilterBy Location</option>
-          <option value="">Haryana</option>
-          <option value="">Delhi</option>
-          <option value="">Punjab</option>
-        </Select>
+    <select value={selectedState} onChange={handleStateChange}>
+      <option value="">Filter by state</option>
+      {states.map((state, index) => (
+        <option key={index} value={state}>
+          {state}
+        </option>
+      ))}
+    </select>
+    <Select
+        fontSize={["10px", "10px", "10px", "20px"]}
+        value={selectedGenre}
+        onChange={(e) => handleGenreChange(e.target.value)}
+        w={["30%", "30%", "30%", "20%"]}
+        placeholder="Select Genre"
+      >
+        <option value="tech">Tech</option>
+        <option value="comedy">Comedy</option>
+        <option value="drama">Drama</option>
+        <option value="fashion">Fashion</option>
+        <option value="parenting">Parenting</option>
+        <option value="travel">Travel</option>
+        <option value="beauty">Beauty & makeup</option>
+        <option value="gaming">Gaming</option>
+        <option value="drama">Drama</option>
+        <option value="food">Food & Cooking</option>
+        <option value="fitness">Fitness</option>
+      </Select>
       </Flex>
 
     <div style={{ marginTop: '40px' }}>
@@ -190,7 +307,7 @@ return (
 >
             <Td onClick={()=>handleToggleRow(ele._id)}>{ele.name}</Td>
             <Td color={'blue'}> <a href={ele.instagram} target='_blank'>{getInstagramUsername(ele.instagram)}</a></Td>
-            <Td onClick={()=>handleToggleRow(ele._id)}>{ele.followers}</Td> 
+            <Td onClick={()=>handleToggleRow(ele._id)}>{formatFollowersCount(ele.followers)}</Td> 
             <Td>
               <TiTick color='green' fontSize={'30px'} onClick={() => handleTickClick(ele._id)}/>
             </Td>
@@ -201,10 +318,19 @@ return (
           {expandedRows.includes(ele._id) && (
             <Tr style={{ borderBottom: `2px solid ${expandedRows.includes(ele._id) ? 'grey' : 'transparent'}` ,borderLeft: `2px solid ${expandedRows.includes(ele._id) ? 'grey' : 'transparent'}`,borderRight: `2px solid ${expandedRows.includes(ele._id) ? 'grey' : 'transparent'}`}}
             >
-              <Td colSpan={5}>
-                <Flex justifyContent={'space-around'}>
+              <Td colSpan={5} textAlign={'left'}>
+                <Flex justifyContent={'space-between'}>
                   <Text fontWeight={'500'}>Average Views : {ele.views}</Text>
                   <Text> YouTube : {ele.youtube}</Text>
+                  <Text>State : {ele.state}</Text>
+                </Flex>
+                <Flex mt={'15px'} justifyContent={'space-between'}>
+                  <Text>City : {ele.city}</Text>
+                  <Text> YouTube Name : {ele.youtubeName}</Text>
+                  <Text>Barter : {ele.barter}</Text>
+                </Flex>
+                <Flex mt={'15px'} justifyContent={'center'}>
+                  <Text>Genre : {ele.genre}</Text>
                 </Flex>
               </Td>
             </Tr>

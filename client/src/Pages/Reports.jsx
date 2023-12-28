@@ -66,9 +66,7 @@ return (
                 </Table>
               </TableContainer>
             </div>
-          )}
-    
-          {/* Conditionally render the details component */}
+          )}    
           {displayMode === 'details' && (
             <div>
               <Button onClick={() => setDisplayMode('list')}><IoMdArrowBack /></Button>

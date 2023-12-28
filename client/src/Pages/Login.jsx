@@ -1,4 +1,4 @@
-import { Box,Flex,FormControl,Input,Button,FormLabel,Image,Text, Heading, color,InputGroup,InputRightElement } from '@chakra-ui/react'
+import { Box,Flex,FormControl,Input,Button,FormLabel,Image,Text, Heading, color,InputGroup,InputRightElement, useToast } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Navbar from '../Components/Navbar'
@@ -12,7 +12,7 @@ const Login = () => {
     email:"",
     password:"",
   })
-
+  const toast=useToast()
 
   const handleClick = () => setShow(!show);
 
@@ -39,6 +39,13 @@ const Login = () => {
         const token = data.token;
         localStorage.setItem('token', token);
         navigate('/dashboard');
+        toast({
+          title: 'Welcome to Scroll Labs',
+          description: "Influencers collaboration tool only for Laudco clients",
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+        })
       } else {
         console.error('Login failed');
         alert('Login failed. Please check your credentials and try again.');

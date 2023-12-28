@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, TableContainer, Table, Thead, Tr, Th, Tbody, Td, Spinner, Image, Flex, Text, Input, Select, Button } from '@chakra-ui/react';
-import ReportDetails from '../ReportDetails';
-import InfluencerDetail from '../InfluencerDetail';
+import { Box, TableContainer, Table, Thead, Tr, Th, Tbody, Td, Spinner, Image, Flex, Text, Input, Select, Button, useToast, Textarea } from '@chakra-ui/react';
 import ClientDetails from './ClientDetails';
 import { baseUrl } from '../../Components/BaseUrl';
 
@@ -21,10 +19,8 @@ const Clients = () => {
     remarks:''
   });
   const [users, setUsers] = useState([]);
-  const [showForm, setShowForm] = useState(false);
   const [showClientForm, setShowClientForm] = useState(false);
-  // console.log(clientFormData)
-
+  const toast=useToast()
 
 const handleClientFormSubmit = async (e) => {
     e.preventDefault();
@@ -40,6 +36,13 @@ const handleClientFormSubmit = async (e) => {
         console.log(response)
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
+      toast({
+        title: 'Client Added Successfully',
+        description: "",
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      })
       fetchClients();
       setClientFormData({
         name: '',
@@ -98,7 +101,6 @@ fetchClients();
         </div>
       </nav>
 
-      {/* Influencer Form */}
       {showClientForm && (
         <div
         style={{
@@ -135,11 +137,11 @@ fetchClients();
                 />
        
               <input
-                type="text"
+                type="email"
                 placeholder='Email'
                 value={clientFormData.email}
                 onChange={(e) => setClientFormData({ ...clientFormData, email: e.target.value })}
-                style={{ padding: '8px', fontSize: '14px', width: '47%', boxSizing: 'border-box', margin: '5px',border:'1px solid grey',borderRadius:'5px' }}              />
+                style={{ padding: '8px', fontSize: '14px', width: '47%', boxSizing: 'border-box', margin: '5px',border:'1px solid grey',borderRadius:'5px' }}/>
 
               <input
                 type="text"
@@ -149,7 +151,7 @@ fetchClients();
                 style={{ padding: '8px', fontSize: '14px', width: '47%', boxSizing: 'border-box', margin: '5px',border:'1px solid grey',borderRadius:'5px' }}              />
            
               <input
-                type="text"
+                type="number"
                 placeholder='No. of Influencers'
                 value={clientFormData.noOfInfluencers}
                 onChange={(e) => setClientFormData({ ...clientFormData, noOfInfluencers: e.target.value })}
@@ -191,8 +193,8 @@ fetchClients();
                 style={{ padding: '8px', fontSize: '14px', width: '96%', boxSizing: 'border-box', marginTop: '5px',border:'1px solid grey',borderRadius:'5px',marginBottom:'5px' }}              />
 
 
-              <input
-                type="text"
+              <Textarea
+                type="textarea"
                 placeholder='Remarks (any other requirements)'
                 value={clientFormData.remarks}
                 onChange={(e) => setClientFormData({ ...clientFormData, remarks: e.target.value })}
@@ -233,7 +235,6 @@ fetchClients();
         </div>
       )}
 
-      {/* Rest of the component */}
       <div style={{ marginTop: '40px' }}>
         {displayMode === 'list' && (
           <div style={{ marginTop: '40px' }}>
@@ -263,8 +264,6 @@ fetchClients();
             </TableContainer>
           </div>
         )}
-
-        {/* Conditionally render the details component */}
         {displayMode === 'details' && (
           <div>
             <Button onClick={() => setDisplayMode('list')}>Back</Button>

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Box, TableContainer, Table, Thead, Tr, Th, Tbody, Td, Spinner, Image, Flex, Text, Input, Select, Button, useToast, Textarea } from '@chakra-ui/react';
-import InfluencerDetail from './InfluencerDetail';
-import { baseUrl } from '../Components/BaseUrl';
+import { baseUrl } from '../../Components/BaseUrl';
+import InfluencerDetail from '../InfluencerDetail'
 
 
 
-const Influencer = () => {
+const IrmInfluencers = () => {
   const [selectedReport, setSelectedReport] = useState(null);
   const [displayMode, setDisplayMode] = useState('list');
   const [influencerFormData, setInfluencerFormData] = useState({
@@ -459,4 +459,4 @@ return (
   );
 };
 
-export default Influencer
+export default IrmInfluencers

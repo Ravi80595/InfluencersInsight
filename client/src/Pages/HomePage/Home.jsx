@@ -83,7 +83,7 @@ return (
             <Image src='https://d1ks0pavw8unez.cloudfront.net/p/images/powerful-tools/creator-search.svg'/>
             </Flex>
             <Box>
-              <Text fontWeight={'600'} fontSize={'27px'}>Influencer Search</Text>
+              <Text fontWeight={'600'} fontSize={'24px'}>Authentic Influencer Network</Text>
               <Text>Find your perfect influencers in minutes.</Text>
             </Box>
           </Flex>
@@ -92,7 +92,7 @@ return (
             <Image src='https://d1ks0pavw8unez.cloudfront.net/p/images/powerful-tools/creator-search.svg'/>
             </Flex>
             <Box>
-              <Text fontWeight={'600'} fontSize={'27px'}>Influencer Search</Text>
+              <Text fontWeight={'600'} fontSize={'24px'}>Transparent & Honest Campaigns</Text>
               <Text>Find your perfect influencers in minutes.</Text>
             </Box>
           </Flex>
@@ -101,7 +101,7 @@ return (
             <Image src='https://d1ks0pavw8unez.cloudfront.net/p/images/powerful-tools/creator-search.svg'/>
             </Flex>
             <Box>
-              <Text fontWeight={'600'} fontSize={'27px'}>Influencer Search</Text>
+              <Text fontWeight={'600'} fontSize={'24px'}>Swift Campaign Execution</Text>
               <Text>Find your perfect influencers in minutes.</Text>
             </Box>
           </Flex>

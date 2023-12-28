@@ -11,7 +11,7 @@ import { VscGitPullRequestCreate } from "react-icons/vsc";
 import { FaTelegramPlane } from "react-icons/fa";
 import { RiMoneyDollarCircleFill } from "react-icons/ri";
 import { baseUrl } from '../Components/BaseUrl';
-
+import { FaDownload } from "react-icons/fa6";
 
 
 const ReportDetails = ({ report }) => {
@@ -79,6 +79,9 @@ const getInstagramUsername = (url) => {
 
 return (
   <>
+      <Flex justifyContent={'end'} mt={'-15px'}>
+      <FaDownload />
+      </Flex>
       <Tabs>
       <TabList pb={'20px'}>
         <Tab>Dashboard</Tab>
@@ -163,15 +166,28 @@ return (
                 </Box>
               </Box>
 
-
               <Box w={'40%'} borderRadius={'10px'} border={'1px solid grey'} p={'20px'}>
-                  <Text>Historic V/S New Engagements</Text>
-                  <Box textAlign={'center'} lineHeight={'32px'} pt={'20px'}>
-                    <Text fontSize={'18px'}>Historical</Text>
-                    <Text fontSize={'20px'} fontWeight={'bold'}>  2.2M</Text>
-                    <Text fontSize={'18px'} pt={'20px'}>New Engagement</Text>
-                    <Text fontSize={'20px'} fontWeight={'bold'}>2.7M</Text>
-                  </Box>
+                <Text fontSize={'20px'} fontWeight={'500'} pb={'15px'}>Influencers Gone Live</Text>
+                <TableContainer>
+              <Table size='sm'>
+                <Thead>
+                  <Tr textAlign='center'>
+                    <Th>Influencer Name</Th>
+                    <Th>Instagram</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+              {reportData.influencers && reportData.influencers.map(ele => (
+                <>
+                <Tr>
+                <Td>{ele.name}</Td>
+                <Td>{ele.followers}</Td>
+                </Tr>
+                </>
+               ))}
+               </Tbody>
+              </Table>
+            </TableContainer>
               </Box>
             </Flex>
           </Box>
@@ -204,9 +220,6 @@ return (
               </Table>
             </TableContainer>
         </TabPanel>
-
-
-
         <TabPanel>
          {reportData.updates}
         </TabPanel>

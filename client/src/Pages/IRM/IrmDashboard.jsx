@@ -12,6 +12,8 @@ import {baseUrl} from '../../Components/BaseUrl'
 import ClientInfluencers from '.././ClientInfluencers'
 import ClientCreateCampaign from '.././ClientCreateCampaign'
 import Briefs from './Briefs'
+import IrmInfluencers from './IrmInfluencers'
+import Admin from '../Admin/Admin'
 
 
 const IrmDashboard = () => {
@@ -75,16 +77,16 @@ return (
       </Flex>
       <Flex id='usersBox' _hover={{color:'black'}} p='10px 17px' className='linkItem' onClick={()=>setShow("Posts")}>
       <GiPostStamp/>
-      <Text pl={["0px","5px",'15px']} className="lhsName">Onboarded influencers</Text>
+      <Text pl={["0px","5px",'15px']} className="lhsName">Onboarded Influencers</Text>
       </Flex>
       <Flex id='usersBox' _hover={{color:'black'}} p='10px 17px' className='linkItem' onClick={()=>setShow("create")}>
       <MdOutlineAccessTime />
       <Text pl={["0px","5px",'15px']} className="lhsName">Live campaigns</Text>
       </Flex>
-      <Flex id='usersBox' _hover={{color:'black'}} p='10px 17px' className='linkItem' onClick={()=>setShow("tracks")}>
+      {/* <Flex id='usersBox' _hover={{color:'black'}} p='10px 17px' className='linkItem' onClick={()=>setShow("tracks")}>
       <MdOutlineAccessTime />
       <Text pl={["0px","5px",'15px']} className="lhsName">Campaign Reporting</Text>
-      </Flex>
+      </Flex> */}
       </Box>
 </Box>
 
@@ -102,7 +104,7 @@ return (
 <Box id='rhsBody' m='30px' p='30px'>
 
 {
-show==="Users"?<Briefs/>:show==="Posts"?<ClientInfluencers/>:show==="create"?<Reports data={profileData}/>:<h1>Fearture Available Soon</h1>
+show==="Users"?<Briefs/>:show==="Posts"?<IrmInfluencers/>:show==="create"?<Admin data={profileData}/>:<h1>Fearture Available Soon</h1>
 }
 </Box>
 </Box>

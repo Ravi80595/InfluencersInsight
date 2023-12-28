@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { baseUrl } from '../Components/BaseUrl';
 import { TiTick } from "react-icons/ti";
 import { ImCross } from "react-icons/im";
-
+import { formatFollowersCount } from '../Utils/formatFollowers';
+import { Tooltip } from '@chakra-ui/react'
 
 const ClientInfluencers = () => {
     const [selectedReport, setSelectedReport] = useState(null);
@@ -217,9 +218,11 @@ return (
           </Flex>
         <Flex gap={'10px'}>
             <Box w={'50%'} p={'30px'} borderRadius={'5px'}>
+            <Tooltip label='Selected Influencers' fontSize='md' placement='top-start'>
               <Box background={'black'} color={'white'} cursor={'pointer'} p={'10px'} borderRadius={'5px'} onClick={toggleTableVisibility}>
                 <Text>Selected Influencers :  {data && data[0].selected.length}</Text>
               </Box>
+              </Tooltip>
         <Box>
         <TableContainer height={tableHeight} background={'#f2f2f2'}>
           <Table size='sm'>
@@ -233,7 +236,7 @@ return (
                   <Tr key={ele.name}>
                     <Td>{ele.name}</Td>
                     <Td color={'blue'}> <a href={ele.instagram} target='_blank'>{getInstagramUsername(ele.instagram)}</a></Td>                 
-                     <Td onClick={()=>handleToggleRow(ele._id)}>{ele.followers}</Td>
+                     <Td onClick={()=>handleToggleRow(ele._id)}>{formatFollowersCount(ele.followers)}</Td>
                     <Td>
                       <ImCross cursor={'pointer'} onClick={()=>removeSelected(ele._id)}/>
                     </Td>
@@ -245,9 +248,11 @@ return (
         </Box>
             </Box>
             <Box w={'50%'} p={'30px'}>
+            <Tooltip label='Rejected Influencers' fontSize='md' placement='top-start'>
               <Box background={'black'} color={'white'} cursor={'pointer'} p={'10px'} borderRadius={'5px'} onClick={toggleTableTwoVisibility}>
                 <Text>Rejected Influencers : {data && data[0].rejected.length}</Text>
               </Box>
+              </Tooltip>
               <TableContainer height={tableTwoHeight} background={'#f2f2f2'}>
               <Table size='sm'>
                 <Thead>
@@ -260,7 +265,7 @@ return (
                       <Tr>
                         <Td>{ele.name}</Td>
                         <Td color={'blue'}> <a href={ele.instagram} target='_blank'>{getInstagramUsername(ele.instagram)}</a></Td>      
-                        <Td onClick={()=>handleToggleRow(ele._id)}>{ele.followers}</Td>
+                        <Td onClick={()=>handleToggleRow(ele._id)}>{formatFollowersCount(ele.followers)}</Td>
                         <Td>
                          <ImCross onClick={()=>removeRejected(ele._id)} />
                         </Td>
@@ -290,9 +295,10 @@ return (
                   data[0].suggested.map((ele) => (
               <React.Fragment key={ele._id}
               >
+                <Tooltip label='Click to see more details' fontSize='md' placement='top-start'>
                 <Tr cursor="pointer" _hover={{ backgroundColor: '#f3f4f6' }} style={{ borderTop: `2px solid ${expandedRows.includes(ele._id) ? 'grey' : 'transparent'}`,borderLeft: `2px solid ${expandedRows.includes(ele._id) ? 'grey' : 'transparent'}`,borderRight: `2px solid ${expandedRows.includes(ele._id) ? 'grey' : 'transparent'}`}}>
                   <Td onClick={()=>handleToggleRow(ele._id)}>{ele.name}</Td>
-                  <Td color={'blue'}> <a href={ele.instagram} target='_blank'>{getInstagramUsername(ele.instagram)}</a></Td>                  <Td onClick={()=>handleToggleRow(ele._id)}>{ele.followers}</Td>
+                  <Td color={'blue'}> <a href={ele.instagram} target='_blank'>{getInstagramUsername(ele.instagram)}</a></Td>                  <Td onClick={()=>handleToggleRow(ele._id)}>{formatFollowersCount(ele.followers)}</Td>
                   <Td>
                     <TiTick color='green' fontSize={'30px'} onClick={() => handleTickClick(ele._id)}/>
                   </Td>
@@ -300,13 +306,23 @@ return (
                     <ImCross color='red' onClick={() => handleReject(ele._id)}/>
                   </Td>
                 </Tr>
+                </Tooltip>
                 {expandedRows.includes(ele._id) && (
                   <Tr style={{ borderBottom: `2px solid ${expandedRows.includes(ele._id) ? 'grey' : 'transparent'}` ,borderLeft: `2px solid ${expandedRows.includes(ele._id) ? 'grey' : 'transparent'}`,borderRight: `2px solid ${expandedRows.includes(ele._id) ? 'grey' : 'transparent'}`}}
                   >
-                    <Td colSpan={5}>
-                      <Flex justifyContent={'space-around'}>
+                    <Td colSpan={5} textAlign={'left'}>
+                      <Flex justifyContent={'space-between'}>
                         <Text fontWeight={'500'}>Average Views : {ele.views}</Text>
                         <Text> YouTube : {ele.youtube}</Text>
+                        <Text>State : {ele.state}</Text>
+                      </Flex>
+                      <Flex mt={'15px'} justifyContent={'space-between'}>
+                        <Text>City : {ele.city}</Text>
+                        <Text> YouTube Name : {ele.youtubeName}</Text>
+                        <Text>Barter : {ele.barter}</Text>
+                      </Flex>
+                      <Flex mt={'15px'} justifyContent={'center'}>
+                        <Text>Genre : {ele.genre}</Text>
                       </Flex>
                     </Td>
                   </Tr>

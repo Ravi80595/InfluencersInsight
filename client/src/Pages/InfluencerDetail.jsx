@@ -1,11 +1,13 @@
-import { Box, Flex,Image,Text,Button } from '@chakra-ui/react'
+import { Box, Flex,Image,Text,Button, useToast } from '@chakra-ui/react'
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { baseUrl } from '../Components/BaseUrl';
 
+
+
 const InfluencerDetail = ({detail}) => {
     const navigate=useNavigate()
-
+    const toast=useToast()
     
 const handleDeleteReport = async (reportId) => {
     console.log(reportId)
@@ -17,8 +19,13 @@ const handleDeleteReport = async (reportId) => {
         },
         });
         if (response.ok) {
-        // Remove the deleted report from the local state
-        navigate('/admin')
+        toast({
+            title: 'Influencer Deleted',
+            description: '',
+            status: 'success',
+            duration: 9000,
+            isClosable: true,
+            });
         } else {
         console.error('Error deleting report:', response.status);
         }

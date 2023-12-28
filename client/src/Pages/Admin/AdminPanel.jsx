@@ -56,10 +56,10 @@ return (
       <GiPostStamp/>
       <Text pl={["0px","5px",'15px']} className="lhsName">Influencers</Text>
       </Flex>
-      <Flex _hover={{color:'black'}} id='usersBox' p='10px 17px' color={'white'} className='linkItem' onClick={()=>setShow("tracking")}>
+      {/* <Flex _hover={{color:'black'}} id='usersBox' p='10px 17px' color={'white'} className='linkItem' onClick={()=>setShow("tracking")}>
       <GiPostStamp/>
       <Text pl={["0px","5px",'15px']} className="lhsName">Tracking</Text>
-      </Flex>
+      </Flex> */}
       </Box>
 </Box>
 

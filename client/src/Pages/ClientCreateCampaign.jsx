@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { baseUrl } from '../Components/BaseUrl';
-import { Box, Flex, Select, Text, useToast } from '@chakra-ui/react';
+import { Box, Flex, Select, Text, Textarea, Tooltip, useToast } from '@chakra-ui/react';
 
 const ClientCreateCampaign = ({data}) => {
   const [selectedInfluencers, setSelectedInfluencers] = useState([]);
@@ -145,13 +145,9 @@ return (
                 style={{ padding: '8px', fontSize: '14px', width: '47%', boxSizing: 'border-box', margin: '5px',border:'1px solid grey',borderRadius:'5px' }}
               />
 
-              <input
-                type="text"
-                value={formData.briefCategory}
-                placeholder='Category'
-                onChange={(e) => setFormData({ ...formData, briefCategory: e.target.value })}
-                style={{ padding: '8px', fontSize: '14px', width: '47%', boxSizing: 'border-box', margin: '5px',border:'1px solid grey',borderRadius:'5px' }}
-              />
+            {/* <Tooltip label='Rejected Influencers' fontSize='md' placement='top-start'>
+              
+                </Tooltip> */}
 
               <input
                 type="text"
@@ -169,20 +165,14 @@ return (
                 style={{ padding: '8px', fontSize: '14px', width: '47%', boxSizing: 'border-box', margin: '5px',border:'1px solid grey',borderRadius:'5px' }}
               />
 
-              <input
-                type="text"
-                value={formData.briefMetrics}
-                placeholder='Key Metrics'
-                onChange={(e) => setFormData({ ...formData, briefMetrics: e.target.value })}
-                style={{ padding: '8px', fontSize: '14px', width: '47%', boxSizing: 'border-box', margin: '5px',border:'1px solid grey',borderRadius:'5px' }}
-              />
+              
 
               <input
                 type="text"
                 value={formData.briefDealType}
                 placeholder='Deal Type'
                 onChange={(e) => setFormData({ ...formData, briefDealType: e.target.value })}
-                style={{ padding: '8px', fontSize: '14px', width: '96%', boxSizing: 'border-box', margin: '5px',border:'1px solid grey',borderRadius:'5px'}}
+                style={{ padding: '8px', fontSize: '14px', width: '47%', boxSizing: 'border-box', margin: '5px',border:'1px solid grey',borderRadius:'5px'}}
               />
 
               <input
@@ -190,8 +180,32 @@ return (
                 value={formData.briefLocation}
                 placeholder='Location'
                 onChange={(e) => setFormData({ ...formData, briefLocation: e.target.value })}
+                style={{ padding: '8px', fontSize: '14px', width: '47%', boxSizing: 'border-box', margin: '5px',border:'1px solid grey',borderRadius:'5px' }}
+              />
+
+              {/* <input
+                      type="text"
+                      value={formData.briefCategory}
+                      placeholder='Follower Criteria'
+                      onChange={(e) => setFormData({ ...formData, briefCategory: e.target.value })}
+                      style={{ padding: '8px', fontSize: '14px', width: '47%', boxSizing: 'border-box', margin: '5px',border:'1px solid grey',borderRadius:'5px' }}
+                      /> */}
+
+                <Select>
+                  <option value="">Macro</option>
+                  <option value="">Nano</option>
+                    <option value=""></option>
+                    <option value=""></option>
+                </Select>
+
+                <Textarea
+                type="text"
+                value={formData.briefMetrics}
+                placeholder='Remarks (Any specific requirements)'
+                onChange={(e) => setFormData({ ...formData, briefMetrics: e.target.value })}
                 style={{ padding: '8px', fontSize: '14px', width: '96%', boxSizing: 'border-box', margin: '5px',border:'1px solid grey',borderRadius:'5px' }}
               />
+
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
               <button type="submit"
                 style={{

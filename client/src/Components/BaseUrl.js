@@ -3,10 +3,13 @@
 
 
 
-export const baseUrl='https://unusual-puce-mite.cyclic.app'
+export const baseUrl= 'https://unusual-puce-mite.cyclic.app'
 
 
-// 'https://unusual-puce-mite.cyclic.app'
+// 'http://localhost:2147'
+
+
+//
 
 
 

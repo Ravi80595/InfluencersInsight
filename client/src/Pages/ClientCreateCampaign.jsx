@@ -19,7 +19,7 @@ const ClientCreateCampaign = ({data}) => {
   const [isAgency, setIsAgency] = useState(false);
   const [agencyName, setAgencyName] = useState('');
 
-  console.log(data,'client campaing')
+  console.log(formData,'client campaing')
 
 
   const handleAgencyChange = (event) => {
@@ -164,9 +164,6 @@ return (
                 onChange={(e) => setFormData({ ...formData, briefGenre: e.target.value })}
                 style={{ padding: '8px', fontSize: '14px', width: '47%', boxSizing: 'border-box', margin: '5px',border:'1px solid grey',borderRadius:'5px' }}
               />
-
-              
-
               <input
                 type="text"
                 value={formData.briefDealType}
@@ -191,11 +188,11 @@ return (
                       style={{ padding: '8px', fontSize: '14px', width: '47%', boxSizing: 'border-box', margin: '5px',border:'1px solid grey',borderRadius:'5px' }}
                       /> */}
 
-                <Select>
-                  <option value="">Macro</option>
-                  <option value="">Nano</option>
-                    <option value=""></option>
-                    <option value=""></option>
+                <Select value={formData.briefCategory} onChange={(e)=>setFormData({...formData,briefCategory:e.target.value})}>
+                  <option value="nano">Nano</option>
+                    <option value="micro">Micro</option>
+                  <option value="macro">Macro</option>
+                    <option value="celebrity">Celebrity</option>
                 </Select>
 
                 <Textarea
@@ -239,13 +236,13 @@ return (
               <Box>
                 <Text mt={'10px'}>Influencers : {ele.briefInfluencers}</Text>
                 <Text mt={'10px'}>Genre : {ele.briefGenre}</Text>
-                <Text mt={'10px'}>Metrics : {ele.briefMetrics}</Text>
+                <Text mt={'10px'}>Message : {ele.briefMetrics}</Text>
                 <Text mt={'10px'}> </Text>
               </Box>
               <Box>
                 <Text mt={'10px'}>Deal Type : {ele.briefDealType}</Text>
                 <Text mt={'10px'}>Platform : {ele.briefPlatform}</Text>
-                <Text mt={'10px'}> Location : {ele.location}</Text>
+                <Text mt={'10px'}> Location : {ele.briefLocation}</Text>
                 <Text mt={'10px'}> </Text>
               </Box>
             </Flex>
